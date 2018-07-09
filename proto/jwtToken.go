@@ -1,10 +1,11 @@
 package uv
 
 import (
-	"gitlab.com/u-v/dash/uv-cli/config"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc/credentials"
 )
+
+const KEY_TOKEN = "x-uv-token"
 
 // oauthAccess supplies PerRPCCredentials from a given token.
 type jwtToken struct {
@@ -18,7 +19,7 @@ func NewJwtAccess(getToken func() string) credentials.PerRPCCredentials {
 
 func (oa jwtToken) GetRequestMetadata(ctx context.Context, uri ...string) (map[string]string, error) {
 	return map[string]string{
-		config.HEDER_TOKEN: oa.GetToken(),
+		KEY_TOKEN: oa.GetToken(),
 	}, nil
 }
 
