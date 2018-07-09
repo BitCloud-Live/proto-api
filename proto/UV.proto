@@ -59,7 +59,7 @@ service UV {
     rpc AppRemoveEnvironmentVariable (UnsetReq) returns (AppStatusRes) { }
     rpc AppPortforward (Identity) returns (PortforwardRes) { }
     rpc AppReset (Identity) returns (AppStatusRes) { }
-    rpc AppAttachVolumes (AttachIdentity) returns (AppStatusRes) { }
+    rpc AppAttachVolume (VolumeAttachReq) returns (AppStatusRes) { }
     rpc AppDetachVolume (AttachIdentity) returns (AppStatusRes) { }
     rpc AppListDomains (AttachIdentity) returns (ListStatusRes) { }
     rpc AppStatusDomain (AttachIdentity) returns (DomainStatusRes) { }
@@ -73,6 +73,7 @@ service UV {
     rpc AppSrvUnBind (AppSrvBindReq) returns (AppStatusRes) {
     }
 }
+
 
 // Authentication ////////////////////////////////////////////////////////////////////
 
@@ -105,6 +106,7 @@ message AttachIdentity{
     string name = 1;
     string attachment = 2;
 }
+
 
 message ListReq {
     int32 index = 1; // [default = 0]
@@ -160,6 +162,11 @@ message DomainStatusRes {
 message VolumeCreateReq {
     string name = 1;
     string spec = 2;
+}
+message VolumeAttachReq{
+    string name = 1;
+    string attachment = 2;
+    string mountPath = 3;
 }
 
 message VolumeSpec {
@@ -243,8 +250,9 @@ message SrvStatusRes {
     ServiceState state = 3;
     string name = 4;
     string plan = 5;
+    string vcapServices = 6;
     // used for information of service like: [ports, uri, username, ...]
-    map<string, string> variable = 6;
+    map<string, string> variable = 7;
 }
 
 message SrvCreateReq {
