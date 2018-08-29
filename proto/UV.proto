@@ -22,8 +22,7 @@ service UV {
     rpc VolumeDelete (Identity) returns (Empty) { }
 
     // Image
-    // rpc ImgImport (ImgImportReq) returns (ImgStatusRes) { }
-    // rpc ImgBuild (ImgBuildReq) returns (ImgStatusRes) { }
+    rpc ImgBuild (stream ImgBuildReq) returns (ImgStatusRes) { }
     rpc ImgList (ListReq) returns (ListStatusRes) { }
     rpc ImgDelete (Identity) returns (Empty) { }
 
@@ -57,7 +56,8 @@ service UV {
     rpc AppChangePlan (ChangePlanReq) returns (AppStatusRes) { }
     rpc AppAddEnvironmentVariable (AppAddEnvironmentVariableReq) returns (AppStatusRes) { }
     rpc AppRemoveEnvironmentVariable (UnsetReq) returns (AppStatusRes) { }
-    rpc AppPortforward (Identity) returns (PortforwardRes) { }
+    // Reserved for later
+    // rpc AppPortforward (Identity) returns (PortforwardRes) { }
     rpc AppReset (Identity) returns (AppStatusRes) { }
     rpc AppAttachVolume (VolumeAttachReq) returns (AppStatusRes) { }
     rpc AppDetachVolume (AttachIdentity) returns (AppStatusRes) { }
@@ -69,6 +69,7 @@ service UV {
     rpc AppStart (Identity) returns (AppStatusRes) { }
     rpc AppDestroy (Identity) returns (Empty) { }
     rpc AppInfo (Identity) returns (AppStatusRes) { }
+    rpc AppLog (Identity) returns (stream Chunk) { }
     rpc AppSrvBind (AppSrvBindReq) returns (AppStatusRes) { }
     rpc AppSrvUnBind (AppSrvBindReq) returns (AppStatusRes) {
     }
@@ -90,9 +91,15 @@ message AuthenticationRes {
 
 message PortforwardRes {
     string svc = 1;
-    string port = 2;
-    string token = 3;
+    repeated string ports = 2;
+    bytes token = 3;
+    string proxyHost = 4;
 }
+
+message Chunk {
+    bytes chunk = 1;
+}
+
 
 message Empty {
 }
@@ -189,17 +196,21 @@ message ImgStatusRes {
     Timestamp created = 1;
     Timestamp updated = 2;
     string name = 3;
-    string url = 4;
 }
 
-message ImgImportReq {
-    string name = 1;
-    bytes tarFile = 2;
-}
 
 message ImgBuildReq {
-    string name = 1;
-    string gitUrl = 2;
+    message Meta {
+         string name = 1;
+    }
+    message Chunk {
+          bytes data = 1;
+          int64 position = 2;
+    }
+    oneof value {
+        Meta meta = 1;
+        Chunk chunk = 2;
+    }
 }
 
 // Setting ///////////////////////////////////////////////////////////////////////////
