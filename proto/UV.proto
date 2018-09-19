@@ -276,6 +276,7 @@ message SrvStatusRes {
     // used for information of service like: [ports, uri, username, ...]
     map<string, string> variable = 7;
     repeated AttachedDomainInfo domains = 8;
+    repeated string endpoints = 9;
 
 }
 
