@@ -138,11 +138,22 @@ message Timestamp {
 
 enum ServiceState {
     Err = 0;
+
+    //Deprecated and will be deleted in v2.0
     UpPending = 1;
+    ////////////////////////////////////////
+
     Up = 2;
+
+    //Deprecated and will be deleted in v2.0
     PayPending = 3;
     StopPending = 4;
+    ////////////////////////////////////////
+
     Stop = 5;
+    Suspend = 6;
+    Unknown = 7;
+    Pending = 8;
 }
 
 message ListStatusRes {
