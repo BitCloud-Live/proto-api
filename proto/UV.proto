@@ -16,7 +16,7 @@ service UV {
     rpc DomainDelete (Identity) returns (Empty) { }
 
     // Volume
-    rpc VolumeSpecList (AppListReq) returns (VolumeSpecListRes) { }
+    rpc VolumeSpecList (ListReq) returns (VolumeSpecListRes) { }
     rpc VolumeSpecInfo (Identity) returns (VolumeSpec) { }
     rpc VolumeList (AppListReq) returns (VolumeListRes) { }
     rpc VolumeInfo (Identity) returns (VolumeStatusRes) { }
@@ -25,7 +25,9 @@ service UV {
 
     // Image
     rpc ImgList (AppListReq) returns (ImgListRes) { }
-    rpc ImgBuild (stream ImgBuildReq) returns (ImgStatusRes) { }
+    rpc ImgInfo (Identity) returns (ImgStatusRes) { }
+    // TODO: Reserved for later
+    // rpc ImgBuild (stream ImgBuildReq) returns (ImgStatusRes) { }
     rpc ImgDelete (Identity) returns (Empty) { }
 
     // Product
@@ -55,10 +57,10 @@ service UV {
     rpc AppInfo (Identity) returns (AppStatusRes) { }
     rpc AppList (ListReq) returns (SrvListRes) { }
     rpc AppCreate (AppCreateReq) returns (AppStatusRes) { }
-    rpc AppLog (Identity) returns (stream Chunk) { }
-    rpc AppConfigSet (ConfigSetReq) returns (AppStatusRes) { } //TODO maybe splits to some functions
-    rpc AppConfigUnset (UnsetReq) returns (AppStatusRes) { }
     rpc AppChangePlan (ChangePlanReq) returns (AppStatusRes) { }
+    rpc AppLog (Identity) returns (stream Chunk) { }
+    rpc AppConfigSet (ConfigSetReq) returns (AppStatusRes) { } //TODO: maybe splits to some functions
+    rpc AppConfigUnset (UnsetReq) returns (AppStatusRes) { }
     rpc AppAddEnvironmentVariable (AppAddEnvironmentVariableReq) returns (AppStatusRes) { }
     rpc AppRemoveEnvironmentVariable (UnsetReq) returns (AppStatusRes) { }
     rpc AppReset (Identity) returns (AppStatusRes) { }
@@ -71,8 +73,6 @@ service UV {
     rpc AppDestroy (Identity) returns (Empty) { }
     rpc AppSrvBind (AppSrvBindReq) returns (AppStatusRes) { }
     rpc AppSrvUnBind (AppSrvBindReq) returns (AppStatusRes) { }
-    // Reserved for later
-    // rpc AppPortforward (Identity) returns (PortforwardRes) { }
 }
 
 // Authentication ////////////////////////////////////////////////////////////////////
@@ -196,7 +196,7 @@ message VolumeSpec {
 
 message VolumeSpecListRes {
     int32 index = 1; // [default = 0]
-    repeated VolumeSpec volumeSpec = 2;
+    repeated VolumeSpec volumeSpecs = 2;
 }
 
 message VolumeStatusRes {
@@ -210,7 +210,7 @@ message VolumeStatusRes {
 
 message VolumeListRes{
     int32 index = 1; // [default = 0]
-    repeated VolumeSpec volumeStatusRes = 2;
+    repeated VolumeStatusRes volumes = 2;
 }
 
 // Image /////////////////////////////////////////////////////////////////////////////
@@ -219,26 +219,28 @@ message ImgStatusRes {
     Timestamp created = 1;
     Timestamp updated = 2;
     string name = 3;
+    repeated string tags = 4;
 }
 
 message ImgListRes {
     int32 index = 1; // [default = 0]
-    repeated ImgStatusRes imgStatusRes = 2;
+    repeated ImgStatusRes imgs = 2;
 }
 
-message ImgBuildReq {
-    message Meta {
-         string name = 1;
-    }
-    message Chunk {
-          bytes data = 1;
-          int64 position = 2;
-    }
-    oneof value {
-        Meta meta = 1;
-        Chunk chunk = 2;
-    }
-}
+// TODO: Reserved for later
+// message ImgBuildReq {
+//     message Meta {
+//          string name = 1;
+//     }
+//     message Chunk {
+//           bytes data = 1;
+//           int64 position = 2;
+//     }
+//     oneof value {
+//         Meta meta = 1;
+//         Chunk chunk = 2;
+//     }
+// }
 
 // Setting ///////////////////////////////////////////////////////////////////////////
 
@@ -294,7 +296,7 @@ message SrvStatusRes {
 }
 
 //For embedded response
-message ServiceList {
+message ServiceRes {
     Timestamp updated = 1;
     ServiceState state = 2;
     string name = 3;
@@ -302,7 +304,7 @@ message ServiceList {
 
 message SrvListRes {
     int32 index = 1; // [default = 0]
-    repeated ServiceList services = 2;
+    repeated ServiceRes services = 2;
 }
 
 message SrvDomainAttachReq{
@@ -328,7 +330,6 @@ message AppStatusRes {
     AppConfig config = 6;
     map<string, string> environmentVariables = 7;
     string vcapServices = 8;
-    repeated AttachedDomainInfo domains = 9;
 }
 
 message AppCreateReq {
