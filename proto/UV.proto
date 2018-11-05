@@ -52,6 +52,8 @@ service UV {
     rpc SrvInfo (Identity) returns (SrvStatusRes) { }
     rpc SrvAttachDomain (SrvDomainAttachReq) returns (SrvStatusRes) { }
     rpc SrvDetachDomain (AttachIdentity) returns (SrvStatusRes) { }
+    rpc SrvConfigSet (SrvConfigSetReq) returns (SrvStatusRes) { } 
+    rpc SrvConfigUnset (UnsetReq) returns (SrvStatusRes) { } 
 
     // Application
     rpc AppInfo (Identity) returns (AppStatusRes) { }
@@ -271,7 +273,26 @@ message ProductRes {
     string name = 1;
     string description = 2;
     repeated Plan plan = 3;
+    //Deprecated: will be deleted in v3.0
+    //Keep this for backward compatibilty
     map<string, string> variable_hints = 4;
+    //Added in v2.1 patch
+    map<string, ProductVariable> variables = 5;
+}
+
+//Added in v2.1 patch
+message ProductVariable{
+       string name = 1;
+       string defaultValue = 2;
+       bool isRequired = 3;
+       string type = 4;
+       string description = 5;
+}
+
+//Added in v2.1 patch
+message SrvConfigSetReq{
+    string name = 1; 
+    map<string, string> variables = 2;
 }
 
 message Plan {
@@ -293,6 +314,10 @@ message SrvStatusRes {
     repeated AttachedDomainInfo domains = 8;
     repeated string endpoints = 9;
 
+    //Added in v2.1 patch
+    string serviceRefrence = 10;
+    //Name(s) of the peer(s) that this service instance bounded to
+    repeated string boundTo = 11;
 }
 
 //For embedded response
