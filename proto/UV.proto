@@ -31,7 +31,7 @@ service UV {
     rpc ImgDelete (Identity) returns (Empty) { }
 
     // Product
-    rpc PrdList (ListReq) returns (ListStatusRes) { }
+    rpc PrdList (ListReq) returns (PrdListRes) { }
     rpc PrdInfo (Identity) returns (ProductRes) { }
 
     // Setting
@@ -52,6 +52,7 @@ service UV {
     rpc SrvInfo (Identity) returns (SrvStatusRes) { }
     rpc SrvAttachDomain (SrvDomainAttachReq) returns (SrvStatusRes) { }
     rpc SrvDetachDomain (AttachIdentity) returns (SrvStatusRes) { }
+    //Added in v2.1 patch
     rpc SrvConfigSet (SrvConfigSetReq) returns (SrvStatusRes) { } 
     rpc SrvConfigUnset (UnsetReq) returns (SrvStatusRes) { } 
 
@@ -278,6 +279,18 @@ message ProductRes {
     map<string, string> variable_hints = 4;
     //Added in v2.1 patch
     map<string, ProductVariable> variables = 5;
+}
+
+//Added in v2.1 patch
+message ProductListRow {
+    string name = 1;
+    string description = 2;
+}
+
+//Added in v2.1 patch
+message PrdListRes {
+    int32 index = 1; // [default = 0]
+    repeated ProductListRow rows = 2;
 }
 
 //Added in v2.1 patch
