@@ -338,6 +338,8 @@ message ServiceRes {
     Timestamp updated = 1;
     ServiceState state = 2;
     string name = 3;
+    //Added in v2.1 patch
+    string serviceRefrence = 4;
 }
 
 message SrvListRes {
