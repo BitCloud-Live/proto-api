@@ -1,3 +1,3 @@
-# uv-api-go
-GRPC proto file for using against uv grpc server
+# proto-api
+GRPC proto file for using against yb grpc server
 
