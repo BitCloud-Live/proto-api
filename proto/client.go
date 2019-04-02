@@ -30,7 +30,7 @@ func (client *grpcClient) Close() {
 }
 
 func (client *grpcClient) V2() YBClient {
-	return client.UV
+	return client.YB
 }
 
 func (client *grpcClient) Context() context.Context {
