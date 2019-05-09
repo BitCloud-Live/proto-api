@@ -11,7 +11,7 @@ service YB {
 
     // Domain
     rpc DomainList (AppListReq) returns (DomainListRes) { }
-    rpc DomainInfo (Identity) returns (DomainStatusRes) { }
+    rpc DomainInfo (Identity) returns (DomainStatusRes) { } 
     rpc DomainCreate (DomainCreateReq) returns (DomainStatusRes) { }
     rpc DomainDelete (Identity) returns (Empty) { }
 
@@ -22,12 +22,12 @@ service YB {
     rpc VolumeInfo (Identity) returns (VolumeStatusRes) { }
     rpc VolumeCreate (VolumeCreateReq) returns (VolumeStatusRes) { }
     rpc VolumeDelete (Identity) returns (Empty) { }
+    rpc VolumeFTPPortforward (Identity) returns (PortforwardRes) { }
 
     // Image
     rpc ImgList (AppListReq) returns (ImgListRes) { }
     rpc ImgInfo (Identity) returns (ImgStatusRes) { }
-    // TODO: Reserved for later
-    // rpc ImgBuild (stream ImgBuildReq) returns (ImgStatusRes) { }
+    rpc ImgBuild (ImgBuildReq) returns (ImgStatusRes) { }
     rpc ImgDelete (Identity) returns (Empty) { }
 
     // Product
@@ -76,8 +76,8 @@ service YB {
     rpc AppDestroy (Identity) returns (Empty) { }
     rpc AppSrvBind (AppSrvBindReq) returns (AppStatusRes) { }
     rpc AppSrvUnBind (AppSrvBindReq) returns (AppStatusRes) { }
+
     //Added in v2.1 patch
-    rpc AppNFSPortforward (Identity) returns (PortforwardRes) { }
     rpc AppListWorkers (Identity) returns (WorkerListRes) { }
     rpc AppAddWorker (WorkerReq) returns (WorkerListRes) { }
     rpc AppRemoveWorker (AttachIdentity) returns (WorkerListRes) { }
@@ -237,20 +237,11 @@ message ImgListRes {
     repeated ImgStatusRes imgs = 2;
 }
 
-// TODO: Reserved for later
-// message ImgBuildReq {
-//     message Meta {
-//          string name = 1;
-//     }
-//     message Chunk {
-//           bytes data = 1;
-//           int64 position = 2;
-//     }
-//     oneof value {
-//         Meta meta = 1;
-//         Chunk chunk = 2;
-//     }
-// }
+message ImgBuildReq {
+    string name = 1;
+    repeated string tags = 2;
+    bytes data = 3; // zip (Dockerfile + Assets)
+}
 
 // Setting ///////////////////////////////////////////////////////////////////////////
 
