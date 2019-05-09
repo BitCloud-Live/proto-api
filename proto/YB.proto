@@ -6,7 +6,10 @@ service YB {
     rpc Login (LoginReq) returns (AuthenticationRes) { }
     rpc Logout (Empty) returns (Empty) { }
 
-    // Activity
+    // Monitoring
+    rpc MonitoringResources(Identity) returns (ResourcesRes) { } // (App OR Srv)
+    rpc MonitoringQueriesTraffic(Identity) returns (TrafficRes) { } // (only App)
+    rpc MonitoringQueriesLatency(Identity) returns (LatencyRes) { } // (only App)
     rpc ActivityList(ActivityReq) returns (ActivityListRes) { }
 
     // Domain
@@ -432,7 +435,39 @@ message AppSrvBindReq {
     string service = 2;
 }
 
-// API Activity //////////////////////////////////////////////////////////////////////
+// Monitoring //////////////////////////////////////////////////////////////////////
+
+message ResourcesRes {
+    Timestamp start = 1;
+    uint64 stepPerod = 2;
+    string name = 3;
+    repeated uint64 core = 4;
+    repeated uint64 ram = 5;
+}
+
+message QueriesAmount {
+    string path = 1; // path or domain of queries
+    repeated uint64 hit = 2; // QPS
+}
+
+message TrafficRes {
+    Timestamp start = 1; // time of the beginning
+    uint64 stepPerod = 2; // time interval
+    string name = 3; // application name
+    repeated QueriesAmount traffic = 4;
+}
+
+message QueriesLatency {
+    string path = 1; // path or domain of queries
+    repeated uint64 latency = 2; // average latency in one-step of the time interval
+}
+
+message LatencyRes {
+    Timestamp start = 1; // time of the beginning
+    uint64 stepPerod = 2; // time interval
+    string name = 3; // application name
+    repeated QueriesLatency latency = 4;
+}
 
 enum ActivityTag {
     None = 0; //No tag
