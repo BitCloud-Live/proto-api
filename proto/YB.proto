@@ -305,7 +305,7 @@ message ProductVariable{
 
 //Added in v2.1 patch
 message SrvConfigSetReq{
-    string name = 1; 
+    string name = 1;
     map<string, string> variables = 2;
 }
 
@@ -404,7 +404,7 @@ message AppCreateReq {
 
 message ConfigSetReq {
     string name = 1;
-    AppConfig config = 2; 
+    AppConfig config = 2;
 }
 
 message AppConfig {
@@ -438,14 +438,14 @@ message AppSrvBindReq {
 // Monitoring //////////////////////////////////////////////////////////////////////
 
 message ResourcesRes {
-    Timestamp start = 1;
-    uint64 stepPerod = 2;
+    Timestamp start = 1; // time of the beginning
+    uint64 stepPerod = 2; // time interval
     string name = 3;
     repeated uint64 core = 4;
     repeated uint64 ram = 5;
 }
 
-message QueriesAmount {
+message Hit {
     string path = 1; // path or domain of queries
     repeated uint64 hit = 2; // QPS
 }
@@ -454,10 +454,10 @@ message TrafficRes {
     Timestamp start = 1; // time of the beginning
     uint64 stepPerod = 2; // time interval
     string name = 3; // application name
-    repeated QueriesAmount traffic = 4;
+    repeated Hit hits = 4;
 }
 
-message QueriesLatency {
+message Latency {
     string path = 1; // path or domain of queries
     repeated uint64 latency = 2; // average latency in one-step of the time interval
 }
@@ -466,7 +466,7 @@ message LatencyRes {
     Timestamp start = 1; // time of the beginning
     uint64 stepPerod = 2; // time interval
     string name = 3; // application name
-    repeated QueriesLatency latency = 4;
+    repeated Latency latencies = 4;
 }
 
 enum ActivityTag {
