@@ -6,6 +6,7 @@ service YB {
     rpc Login (LoginReq) returns (AuthenticationRes) { }
     rpc Logout (Empty) returns (Empty) { }
 
+    // Added in v2.3 patch
     // Monitoring
     rpc MonitoringResources(Identity) returns (ResourcesRes) { } // (App OR Srv)
     rpc MonitoringQueriesTraffic(Identity) returns (TrafficRes) { } // (only App)
@@ -17,6 +18,11 @@ service YB {
     rpc DomainInfo (Identity) returns (DomainStatusRes) { } 
     rpc DomainCreate (DomainCreateReq) returns (DomainStatusRes) { }
     rpc DomainDelete (Identity) returns (Empty) { }
+    // //Added in v2.3 patch
+    // rpc DomainAddRoute (Identity) returns (DomainStatusRes) { }
+    // rpc DomainRemoveRoute (Identity) returns (DomainStatusRes) { }
+    // //Get all available domain features
+    // rpc DomainFeatureList (Empty) returns (DomainFeatures) { }
 
     // Volume
     rpc VolumeSpecList (ListReq) returns (VolumeSpecListRes) { }
@@ -30,6 +36,7 @@ service YB {
     // Image
     rpc ImgList (AppListReq) returns (ImgListRes) { }
     rpc ImgInfo (Identity) returns (ImgStatusRes) { }
+    //Added in v2.3 patch
     rpc ImgBuild (ImgBuildReq) returns (ImgStatusRes) { }
     rpc ImgDelete (Identity) returns (Empty) { }
 
@@ -53,7 +60,9 @@ service YB {
     rpc SrvStop (Identity) returns (SrvStatusRes) { }
     rpc SrvDestroy (Identity) returns (Empty) { }
     rpc SrvInfo (Identity) returns (SrvStatusRes) { }
+    //SrvAttachDomain Deprecated: will be deleted in v3.0
     rpc SrvAttachDomain (SrvDomainAttachReq) returns (SrvStatusRes) { }
+    //SrvDetachDomain Deprecated: will be deleted in v3.0
     rpc SrvDetachDomain (AttachIdentity) returns (SrvStatusRes) { }
     //Added in v2.1 patch
     rpc SrvConfigSet (SrvConfigSetReq) returns (SrvStatusRes) { } 
@@ -72,7 +81,11 @@ service YB {
     rpc AppReset (Identity) returns (AppStatusRes) { }
     rpc AppAttachVolume (VolumeAttachReq) returns (AppStatusRes) { }
     rpc AppDetachVolume (AttachIdentity) returns (AppStatusRes) { }
+    //AppAttachDomain23 Deprecated: will be deleted in v3.0
+    rpc AppAttachDomain23 (SrvDomainAttachReq) returns (AppStatusRes) { }
+    //AppAttachDomain Deprecated: will be deleted in v3.0
     rpc AppAttachDomain (AttachIdentity) returns (AppStatusRes) { }
+    //AppDetachDomain Deprecated: will be deleted in v3.0
     rpc AppDetachDomain (AttachIdentity) returns (AppStatusRes) { }
     rpc AppStop (Identity) returns (AppStatusRes) { }
     rpc AppStart (Identity) returns (AppStatusRes) { }
@@ -80,9 +93,14 @@ service YB {
     rpc AppSrvBind (AppSrvBindReq) returns (AppStatusRes) { }
     rpc AppSrvUnBind (AppSrvBindReq) returns (AppStatusRes) { }
 
+    //Added in v2.3 patch
+    rpc AppFTPPortforward (Identity) returns (PortforwardRes) { }
     //Added in v2.1 patch
+    //AppNFSPortforward Deprecated: will be deleted in v3.0
+    rpc AppNFSPortforward (Identity) returns (PortforwardRes) { }
     rpc AppListWorkers (Identity) returns (WorkerListRes) { }
     rpc AppAddWorker (WorkerReq) returns (WorkerListRes) { }
+    rpc AppWorkerUpdate (WorkerReq) returns (WorkerRes) { }
     rpc AppRemoveWorker (AttachIdentity) returns (WorkerListRes) { }
     rpc AppWorkerInfo (AttachIdentity) returns (WorkerRes) { }
     rpc AppWorkerPortforward (AttachIdentity) returns (PortforwardRes) { }
@@ -174,6 +192,9 @@ message DomainStatusRes {
     string domain = 4;
     string tls = 5;
     string attachedTo = 6;
+    //Added in v2.3 patch
+    string path = 7;
+
 }
 
 message DomainListRes {
@@ -181,11 +202,22 @@ message DomainListRes {
     repeated DomainStatusRes domains = 2;
 }
 
+// //Added in v2.3 patch
+// message DomainRouteReq{
+//     string domain = 1;
+//     string endpoint = 2;
+//     string path = 3;
+//     map<string, string> featureRequests = 4;
+// }
+
 //For embedded response
+//AttachedDomainInfo Deprecated: will be deleted in v3.0
 message AttachedDomainInfo{
     string domain = 1;
     string endpoint = 2;
     string endpointType = 3;
+    //Added in v2.3 patch
+    string path = 4;
 }
 
 // Volume ////////////////////////////////////////////////////////////////////////////
@@ -242,7 +274,7 @@ message ImgListRes {
 
 message ImgBuildReq {
     string name = 1;
-    repeated string tags = 2;
+    string tags = 2;
     bytes data = 3; // zip (Dockerfile + Assets)
 }
 
@@ -351,6 +383,8 @@ message SrvListRes {
 message SrvDomainAttachReq{
     AttachIdentity attachIdentity = 1;
     string endpoint = 2;
+    //Added in v2.3 patch
+    string path = 3;
 }
 
 message SrvCreateReq {
@@ -378,6 +412,7 @@ message WorkerReq{
     AttachIdentity identities = 4;
     WorkerConfig config = 5;
 }
+
 message WorkerListRes {
     int32 index = 1; // [default = 0]
     repeated WorkerRes services = 2;
