@@ -37,7 +37,8 @@ service YB {
     rpc ImgList (AppListReq) returns (ImgListRes) { }
     rpc ImgInfo (Identity) returns (ImgStatusRes) { }
     //Added in v2.3 patch
-    rpc RepositoryBuild (RepositoryBuildReq) returns (RepositoryStatusRes) { }
+    rpc ImgBuild (ImgBuildReq) returns (Empty) { }
+    rpc ImgBuildLog (Identity) returns (stream Chunk) { }
     rpc ImgDelete (Identity) returns (Empty) { }
 
     // Product
@@ -264,25 +265,14 @@ message ImgListRes {
     repeated ImgStatusRes imgs = 2;
 }
 
+
+// Img Build //////////////////////////////////////////////////////////////////
+
 message ImgBuildReq {
-    string name = 1;
-    string tags = 2;
-    bytes data = 3; // zip (Dockerfile + Assets)
-}
-
-// Repository Build //////////////////////////////////////////////////////////////////
-
-message RepositoryBuildReq {
     string zipArchiveURL = 1;  // ZIP ( Dockerfile + The Asset Repository )
     string repositoryTag = 2;
     string repositoryName = 3; 
 }
-
-// TODO: replace string.log by PortforwardRes  
-message RepositoryStatusRes {
-    string log = 1;
-}
-
 // Setting ///////////////////////////////////////////////////////////////////////////
 
 message SettingInfoReq {
