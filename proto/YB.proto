@@ -1,23 +1,42 @@
 syntax = "proto3";
 package yb;
+import "google/api/annotations.proto";
 
 service YB {
     // Authentication
-    rpc Login (LoginReq) returns (AuthenticationRes) { }
-    rpc Logout (Empty) returns (Empty) { }
+    rpc Login (LoginReq) returns (AuthenticationRes) {
+        option (google.api.http) = { post: “/v2/auth/login body: “*” };
+    }
+    rpc Logout (Empty) returns (Empty) { option (google.api.http) = { post: “/v2/auth/logout” body: “*” }; }
 
     // Added in v2.3 patch
     // Monitoring
-    rpc MonitoringResources(Identity) returns (ResourcesRes) { } // (App OR Srv)
-    rpc MonitoringQueriesTraffic(Identity) returns (TrafficRes) { } // (only App)
-    rpc MonitoringQueriesLatency(Identity) returns (LatencyRes) { } // (only App)
-    rpc ActivityList(ActivityReq) returns (ActivityListRes) { }
+    rpc MonitoringResources(Identity) returns (ResourcesRes) {
+ option (google.api.http) = { get: “/v2/monitoring/ body: “*” }; 
+} // (App OR Srv)
+    rpc MonitoringQueriesTraffic(Identity) returns (TrafficRes) {
+ option (google.api.http) = { put: “/v2/monitoring/schedule” body: “*” }; 
+} // (only App)
+    rpc MonitoringQueriesLatency(Identity) returns (LatencyRes) {
+ option (google.api.http) = { put: “/v2/monitoring/schedule” body: “*” }; 
+} // (only App)
+    rpc ActivityList(ActivityReq) returns (ActivityListRes) {
+ option (google.api.http) = { put: “/v2/monitoring/schedule” body: “*” }; 
+}
 
     // Domain
-    rpc DomainList (AppListReq) returns (DomainListRes) { }
-    rpc DomainInfo (Identity) returns (DomainStatusRes) { } 
-    rpc DomainCreate (DomainCreateReq) returns (DomainStatusRes) { }
-    rpc DomainDelete (Identity) returns (Empty) { }
+    rpc DomainList (AppListReq) returns (DomainListRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc DomainInfo (Identity) returns (DomainStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+} 
+    rpc DomainCreate (DomainCreateReq) returns (DomainStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc DomainDelete (Identity) returns (Empty) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
     // //Added in v2.3 patch
     // rpc DomainAddRoute (Identity) returns (DomainStatusRes) { }
     // rpc DomainRemoveRoute (Identity) returns (DomainStatusRes) { }
@@ -25,78 +44,192 @@ service YB {
     // rpc DomainFeatureList (Empty) returns (DomainFeatures) { }
 
     // Volume
-    rpc VolumeSpecList (ListReq) returns (VolumeSpecListRes) { }
-    rpc VolumeSpecInfo (Identity) returns (VolumeSpec) { }
-    rpc VolumeList (AppListReq) returns (VolumeListRes) { }
-    rpc VolumeInfo (Identity) returns (VolumeStatusRes) { }
-    rpc VolumeCreate (VolumeCreateReq) returns (VolumeStatusRes) { }
-    rpc VolumeDelete (Identity) returns (Empty) { }
-    rpc VolumeFTPPortforward (Identity) returns (PortforwardRes) { }
+    rpc VolumeSpecList (ListReq) returns (VolumeSpecListRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc VolumeSpecInfo (Identity) returns (VolumeSpec) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc VolumeList (AppListReq) returns (VolumeListRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc VolumeInfo (Identity) returns (VolumeStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc VolumeCreate (VolumeCreateReq) returns (VolumeStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc VolumeDelete (Identity) returns (Empty) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc VolumeFTPPortforward (Identity) returns (PortforwardRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
 
     // Image
-    rpc ImgList (AppListReq) returns (ImgListRes) { }
-    rpc ImgInfo (Identity) returns (ImgStatusRes) { }
+    rpc ImgList (AppListReq) returns (ImgListRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc ImgInfo (Identity) returns (ImgStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
     //Added in v2.3 patch
-    rpc ImgBuild (ImgBuildReq) returns (Empty) { }
-    rpc ImgBuildLog (Identity) returns (stream Chunk) { }
-    rpc ImgDelete (Identity) returns (Empty) { }
+    rpc ImgBuild (ImgBuildReq) returns (Empty) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc ImgBuildLog (Identity) returns (stream Chunk) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc ImgDelete (Identity) returns (Empty) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
 
     // Product
-    rpc PrdList (ListReq) returns (PrdListRes) { }
-    rpc PrdInfo (Identity) returns (ProductRes) { }
+    rpc PrdList (ListReq) returns (PrdListRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc PrdInfo (Identity) returns (ProductRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
 
     // Setting
-    rpc SetList (AppListReq) returns (ListStatusRes) { }
-    rpc SetInfo (SettingInfoReq) returns (SettingRes) { }
-    rpc SetAdd (SettingReq) returns (SettingRes) { }
-    rpc SetUpdate (SettingReq) returns (SettingRes) { }
-    rpc SetDelete (SettingInfoReq) returns (Empty) { }
+    rpc SetList (AppListReq) returns (ListStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc SetInfo (SettingInfoReq) returns (SettingRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc SetAdd (SettingReq) returns (SettingRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc SetUpdate (SettingReq) returns (SettingRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc SetDelete (SettingInfoReq) returns (Empty) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
     
     // Service
-    rpc SrvList (AppListReq) returns (SrvListRes) { }
-    rpc SrvCreate (SrvCreateReq) returns (SrvStatusRes) { }
-    rpc SrvChangePlan (ChangePlanReq) returns (SrvStatusRes) { }
-    rpc SrvPortforward (Identity) returns (PortforwardRes) { }
-    rpc SrvStart (Identity) returns (SrvStatusRes) { }
-    rpc SrvStop (Identity) returns (SrvStatusRes) { }
-    rpc SrvDestroy (Identity) returns (Empty) { }
-    rpc SrvInfo (Identity) returns (SrvStatusRes) { }
-    rpc SrvAttachDomain (SrvDomainAttachReq) returns (SrvStatusRes) { }
-    rpc SrvDetachDomain (SrvDomainAttachReq) returns (SrvStatusRes) { }
+    rpc SrvList (AppListReq) returns (SrvListRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc SrvCreate (SrvCreateReq) returns (SrvStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc SrvChangePlan (ChangePlanReq) returns (SrvStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc SrvPortforward (Identity) returns (PortforwardRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc SrvStart (Identity) returns (SrvStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc SrvStop (Identity) returns (SrvStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc SrvDestroy (Identity) returns (Empty) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc SrvInfo (Identity) returns (SrvStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc SrvAttachDomain (SrvDomainAttachReq) returns (SrvStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc SrvDetachDomain (SrvDomainAttachReq) returns (SrvStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
     //Added in v2.1 patch
-    rpc SrvConfigSet (SrvConfigSetReq) returns (SrvStatusRes) { } 
-    rpc SrvConfigUnset (UnsetReq) returns (SrvStatusRes) { } 
+    rpc SrvConfigSet (SrvConfigSetReq) returns (SrvStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+} 
+    rpc SrvConfigUnset (UnsetReq) returns (SrvStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+} 
 
     // Application
-    rpc AppInfo (Identity) returns (AppStatusRes) { }
-    rpc AppList (ListReq) returns (SrvListRes) { }
-    rpc AppCreate (AppCreateReq) returns (AppStatusRes) { }
-    rpc AppChangePlan (ChangePlanReq) returns (AppStatusRes) { }
-    rpc AppLog (Identity) returns (stream Chunk) { }
-    rpc AppConfigSet (ConfigSetReq) returns (AppStatusRes) { } //TODO: maybe splits to some functions
-    rpc AppConfigUnset (UnsetReq) returns (AppStatusRes) { }
-    rpc AppAddEnvironmentVariable (AppAddEnvironmentVariableReq) returns (AppStatusRes) { }
-    rpc AppRemoveEnvironmentVariable (UnsetReq) returns (AppStatusRes) { }
-    rpc AppReset (Identity) returns (AppStatusRes) { }
-    rpc AppAttachVolume (VolumeAttachReq) returns (AppStatusRes) { }
-    rpc AppDetachVolume (AttachIdentity) returns (AppStatusRes) { }
-    rpc AppAttachDomain (SrvDomainAttachReq) returns (AppStatusRes) { }
-    rpc AppDetachDomain (SrvDomainAttachReq) returns (AppStatusRes) { }
-    rpc AppStop (Identity) returns (AppStatusRes) { }
-    rpc AppStart (Identity) returns (AppStatusRes) { }
-    rpc AppDestroy (Identity) returns (Empty) { }
-    rpc AppSrvBind (AppSrvBindReq) returns (AppStatusRes) { }
-    rpc AppSrvUnBind (AppSrvBindReq) returns (AppStatusRes) { }
+    rpc AppInfo (Identity) returns (AppStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc AppList (ListReq) returns (SrvListRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc AppCreate (AppCreateReq) returns (AppStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc AppChangePlan (ChangePlanReq) returns (AppStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc AppLog (Identity) returns (stream Chunk) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc AppConfigSet (ConfigSetReq) returns (AppStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+} //TODO: maybe splits to some functions
+    rpc AppConfigUnset (UnsetReq) returns (AppStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc AppAddEnvironmentVariable (AppAddEnvironmentVariableReq) returns (AppStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc AppRemoveEnvironmentVariable (UnsetReq) returns (AppStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc AppReset (Identity) returns (AppStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc AppAttachVolume (VolumeAttachReq) returns (AppStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc AppDetachVolume (AttachIdentity) returns (AppStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc AppAttachDomain (SrvDomainAttachReq) returns (AppStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc AppDetachDomain (SrvDomainAttachReq) returns (AppStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc AppStop (Identity) returns (AppStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc AppStart (Identity) returns (AppStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc AppDestroy (Identity) returns (Empty) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc AppSrvBind (AppSrvBindReq) returns (AppStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc AppSrvUnBind (AppSrvBindReq) returns (AppStatusRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
 
     //Added in v2.1 patch
     //AppNFSPortforward Deprecated: will be deleted in v3.0
-    rpc AppNFSPortforward (Identity) returns (PortforwardRes) { }
-    rpc AppListWorkers (Identity) returns (WorkerListRes) { }
-    rpc AppAddWorker (WorkerReq) returns (WorkerListRes) { }
-    rpc AppWorkerUpdate (WorkerReq) returns (WorkerRes) { }
-    rpc AppRemoveWorker (AttachIdentity) returns (WorkerListRes) { }
-    rpc AppWorkerInfo (AttachIdentity) returns (WorkerRes) { }
-    rpc AppWorkerPortforward (AttachIdentity) returns (PortforwardRes) { }
+    rpc AppNFSPortforward (Identity) returns (PortforwardRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc AppListWorkers (Identity) returns (WorkerListRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc AppAddWorker (WorkerReq) returns (WorkerListRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc AppWorkerUpdate (WorkerReq) returns (WorkerRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc AppRemoveWorker (AttachIdentity) returns (WorkerListRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc AppWorkerInfo (AttachIdentity) returns (WorkerRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
+    rpc AppWorkerPortforward (AttachIdentity) returns (PortforwardRes) {
+ option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
+}
 }
 
 // Authentication ////////////////////////////////////////////////////////////////////
