@@ -195,25 +195,7 @@ service YB {
     rpc AppNFSPortforward (Identity) returns (PortforwardRes) {
  option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
 }
-    rpc AppListWorkers (Identity) returns (WorkerListRes) {
- option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
-}
-    rpc AppAddWorker (WorkerReq) returns (WorkerListRes) {
- option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
-}
-    rpc AppWorkerUpdate (WorkerReq) returns (WorkerRes) {
- option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
-}
-    rpc AppRemoveWorker (AttachIdentity) returns (WorkerListRes) {
- option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
-}
-    rpc AppWorkerInfo (AttachIdentity) returns (WorkerRes) {
- option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
-}
-    rpc AppWorkerPortforward (AttachIdentity) returns (PortforwardRes) {
- option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
-}
-}
+
 
 // Authentication ////////////////////////////////////////////////////////////////////
 
