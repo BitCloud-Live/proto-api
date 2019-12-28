@@ -91,24 +91,7 @@ service YB {
     rpc PrdInfo (Identity) returns (ProductRes) {
  option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
 }
-
-    // Setting
-    rpc SetList (AppListReq) returns (ListStatusRes) {
- option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
-}
-    rpc SetInfo (SettingInfoReq) returns (SettingRes) {
- option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
-}
-    rpc SetAdd (SettingReq) returns (SettingRes) {
- option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
-}
-    rpc SetUpdate (SettingReq) returns (SettingRes) {
- option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
-}
-    rpc SetDelete (SettingInfoReq) returns (Empty) {
- option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
-}
-    
+ 
     // Service
     rpc SrvList (AppListReq) returns (SrvListRes) {
  option (google.api.http) = { put: “/v2/remidner/schedule” body: “*” }; 
