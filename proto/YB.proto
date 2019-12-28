@@ -562,30 +562,6 @@ message SrvCreateReq {
     map<string, string> variable = 4;
 }
 
-//Added in v2.1 patch
-// Worker  //////////////////////////////////////////////////////////////////////
-
-message WorkerRes{
-    Timestamp created = 1;
-    Timestamp updated = 2;
-    ServiceState state = 3;
-    string name = 4;
-    WorkerConfig config = 5;
-}
-message WorkerConfig{
-    string image = 1;
-    uint64 port = 2;
-}
-message WorkerReq{
-    AttachIdentity identities = 4;
-    WorkerConfig config = 5;
-}
-
-message WorkerListRes {
-    int32 index = 1; // [default = 0]
-    repeated WorkerRes services = 2;
-}
-
 // Application  //////////////////////////////////////////////////////////////////////
 
 message AppStatusRes {
