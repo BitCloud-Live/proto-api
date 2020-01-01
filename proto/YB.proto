@@ -6,15 +6,16 @@ service YB {
     // Authentication
     rpc Login (LoginReq) returns (AuthenticationRes) {
         option (google.api.http) = {
-            post: "/v2/auth/login"
+            post: "/v2/auth/_login"
             body: "*" };
     }
     rpc Logout (Empty) returns (Empty) {
         option (google.api.http) = {
-            get: "/v2/auth/logout" };
+            get: "/v2/auth/_logout" };
     }
 
-    // Added in v2.3 patch
+
+
     // Monitoring
     rpc MonitoringResources(Identity) returns (ResourcesRes) { // (App OR Srv)
         option (google.api.http) = {
@@ -22,17 +23,19 @@ service YB {
     }
     rpc MonitoringQueriesTraffic(Identity) returns (TrafficRes) { // (only App)
         option (google.api.http) = {
-            get: "/v2/monitoring/queries/traffic/{name}" };
+            get: "/v2/monitoring/_queries/_traffic/{name}" };
     }
     rpc MonitoringQueriesLatency(Identity) returns (LatencyRes) { // (only App)
         option (google.api.http) = {
-            get: "/v2/monitoring/queries/latency/{name}" };
+            get: "/v2/monitoring/_queries/_latency/{name}" };
     }
     rpc ActivityList(ActivityReq) returns (ActivityListRes) {
         option (google.api.http) = {
-            post: "/v2/monitoring/activity"
+            post: "/v2/monitoring/_activity"
             body: "*" };
     }
+
+
 
     // Domain
     rpc DomainList (AppListReq) returns (DomainListRes) {
@@ -59,14 +62,12 @@ service YB {
     // //Get all available domain features
     // rpc DomainFeatureList (Empty) returns (DomainFeatures) { }
 
+
+
     // Volume
     rpc VolumeSpecList (ListReq) returns (VolumeSpecListRes) {
         option (google.api.http) = {
             get: "/v2/volume-spec" };
-    }
-    rpc VolumeSpecInfo (Identity) returns (VolumeSpec) {
-        option (google.api.http) = {
-            get: "/v2/volume-spec/{name}" };
     }
     rpc VolumeList (AppListReq) returns (VolumeListRes) {
         option (google.api.http) = {
@@ -97,20 +98,24 @@ service YB {
     }
     rpc ImgInfo (Identity) returns (ImgStatusRes) {
         option (google.api.http) = {
-            get: "/v2/image/{name}" };
+            get: "/v2/image/_info" };
+    }
+    rpc ImgDelete (Identity) returns (Empty) {
+        option (google.api.http) = {
+            delete: "/v2/image" };
     }
     rpc ImgBuild (ImgBuildReq) returns (Empty) { 
         option (google.api.http) = {
-            post: "/v2/image"
+            post: "/v2/image/_build"
             body: "*" };
     }
     rpc ImgBuildLog (Identity) returns (stream Chunk) {
         option (google.api.http) = {
-            get: "/v2/image/{name}" };
+            get: "/v2/image/_build/_log" };
     }
-    rpc ImgDelete (Identity) returns (Empty) {
+    rpc ImgBuildLogTail (Identity) returns (Chunk) {
         option (google.api.http) = {
-            delete: "/v2/image/{name}" };
+            get: "/v2/image/_build/_log/_tail" };
     }
 
 
@@ -147,26 +152,25 @@ service YB {
     }
     rpc SrvChangePlan (ChangePlanReq) returns (SrvStatusRes) {
         option (google.api.http) = {
-            post: "/v2/service/plan"
+            post: "/v2/service/_plan"
             body: "*" };
     }
     rpc SrvStart (Identity) returns (SrvStatusRes) {
         option (google.api.http) = {
-            get: "/v2/service/start/{name}" };
+            post: "/v2/service/_start/{name}" };
     }
     rpc SrvStop (Identity) returns (SrvStatusRes) {
         option (google.api.http) = {
-            get: "/v2/service/stop/{name}" };
+            post: "/v2/service/_stop/{name}" };
     }
-
     rpc SrvAttachDomain (SrvDomainAttachReq) returns (SrvStatusRes) {
         option (google.api.http) = {
-            post: "/v2/service/domain"
+            post: "/v2/service/_domain"
             body: "*" };
     }
     rpc SrvDetachDomain (SrvDomainAttachReq) returns (SrvStatusRes) {
         option (google.api.http) = {
-            delete: "/v2/service/domain"
+            delete: "/v2/service/_domain"
              };
     }
     rpc SrvPortforward (Identity) returns (PortforwardRes) {}
@@ -197,73 +201,77 @@ service YB {
     }
     rpc AppChangePlan (ChangePlanReq) returns (AppStatusRes) {
         option (google.api.http) = {
-            post: "/v2/application/plan"
+            post: "/v2/application/_plan"
             body: "*" };
     }
     rpc AppLog (Identity) returns (stream Chunk) {
         option (google.api.http) = {
-            get: "/v2/application/log/{name}" };
+            get: "/v2/application/_log/{name}" };
+    }
+    rpc AppLogTail (Identity) returns (Chunk) {
+        option (google.api.http) = {
+            get: "/v2/application/_log/_tail/{name}" };
     }
     rpc AppConfigSet (ConfigSetReq) returns (AppStatusRes) {
         option (google.api.http) = {
-            put: "/v2/application/config"
+            post: "/v2/application/_config"
             body: "*" };
-    } //TODO: maybe splits to some functions
+    }
     rpc AppConfigUnset (UnsetReq) returns (AppStatusRes) {
         option (google.api.http) = {
-            delete: "/v2/application/config"
+            delete: "/v2/application/_config"
              };
     }
     rpc AppAddEnvironmentVariable (AppAddEnvironmentVariableReq) returns (AppStatusRes) {
         option (google.api.http) = {
-            post: "/v2/application/environment-variable"
+            post: "/v2/application/_environment-variable"
             body: "*" };
     }
     rpc AppRemoveEnvironmentVariable (UnsetReq) returns (AppStatusRes) {
         option (google.api.http) = {
-            delete: "/v2/application/environment-variable"
+            delete: "/v2/application/_environment-variable"
              };
     }
     rpc AppReset (Identity) returns (AppStatusRes) {
         option (google.api.http) = {
-            get: "/v2/application/reset/{name}" };
+            post: "/v2/application/_reset/{name}" };
     }
     rpc AppStop (Identity) returns (AppStatusRes) {
         option (google.api.http) = {
-            get: "/v2/application/stop/{name}" };
+            post: "/v2/application/_stop/{name}" };
     }
     rpc AppStart (Identity) returns (AppStatusRes) {
         option (google.api.http) = {
-            get: "/v2/application/start/{name}" };
+            post: "/v2/application/_start/{name}" };
     }
     rpc AppAttachVolume (VolumeAttachReq) returns (AppStatusRes) {
         option (google.api.http) = {
-            post: "/v2/application/volume"
+            post: "/v2/application/_volume"
             body: "*" };
     }
     rpc AppDetachVolume (AttachIdentity) returns (AppStatusRes) {
         option (google.api.http) = {
-            delete: "/v2/application/volume"
+            delete: "/v2/application/_volume"
              };
     }
     rpc AppAttachDomain (SrvDomainAttachReq) returns (AppStatusRes) {
         option (google.api.http) = {
-            post: "/v2/application/domain"
+            post: "/v2/application/_domain"
             body: "*" };
     }
     rpc AppDetachDomain (SrvDomainAttachReq) returns (AppStatusRes) {
         option (google.api.http) = {
-            delete: "/v2/application/domain"
+            delete: "/v2/application/_domain"
              };
     }
     rpc AppSrvBind (AppSrvBindReq) returns (AppStatusRes) {
         option (google.api.http) = {
-            post: "/v2/application/service"
+            post: "/v2/application/_service"
             body: "*" };
     }
     rpc AppSrvUnBind (AppSrvBindReq) returns (AppStatusRes) {
         option (google.api.http) = {
-            delete: "/v2/application/service"
+            delete: "/v2/application/_service"
              };
     }
 
@@ -402,7 +410,7 @@ message VolumeAttachReq{
 message VolumeSpec {
     string name = 1;
     string class = 2;
-    string size = 4;
+    string size = 3;
 }
 
 message VolumeSpecListRes {
@@ -438,35 +446,11 @@ message ImgListRes {
     repeated ImgStatusRes imgs = 2;
 }
 
-
-// Img Build //////////////////////////////////////////////////////////////////
+// Img Build /////////////////////////////////////////////////////////////////////////
 
 message ImgBuildReq {
-    string zipArchiveURL = 1;  // ZIP ( Dockerfile + The Asset Repository )
-    string repositoryTag = 2;
-    string repositoryName = 3; 
-}
-// Setting ///////////////////////////////////////////////////////////////////////////
-
-message SettingInfoReq {
-    string name = 1;
-    string app = 2;
-}
-
-message SettingReq{
-    string name = 1;
-    string app = 2;
-    string path = 3;
-    bytes file = 4;
-}
-
-message SettingRes{
-    Timestamp created = 1;
-    Timestamp updated = 2;
-    string name = 3;
-    string app = 4;
-    string path = 5;
-    bytes file = 6;
+    string repositoryTag = 1;
+    string repositoryName = 2;
 }
 
 // Service ///////////////////////////////////////////////////////////////////////////
@@ -475,26 +459,19 @@ message ProductRes {
     string name = 1;
     string description = 2;
     repeated Plan plan = 3;
-    //Deprecated: will be deleted in v3.0
-    //Keep this for backward compatibilty
-    map<string, string> variable_hints = 4;
-    //Added in v2.1 patch
-    map<string, ProductVariable> variables = 5;
+    map<string, ProductVariable> variables = 4;
 }
 
-//Added in v2.1 patch
 message ProductListRow {
     string name = 1;
     string description = 2;
 }
 
-//Added in v2.1 patch
 message PrdListRes {
     int32 index = 1; // [default = 0]
     repeated ProductListRow rows = 2;
 }
 
-//Added in v2.1 patch
 message ProductVariable{
        string name = 1;
        string defaultValue = 2;
@@ -503,7 +480,7 @@ message ProductVariable{
        string description = 5;
 }
 
-//Added in v2.1 patch
+//TODO reset ProductVariable 
 message SrvConfigSetReq{
     string name = 1;
     map<string, string> variables = 2;
@@ -541,6 +518,7 @@ message ServiceRes {
     string name = 3;
     //Added in v2.1 patch
     string serviceRefrence = 4;
+    string plan = 5;
 }
 
 message SrvListRes {
@@ -614,7 +592,7 @@ message AppSrvBindReq {
     string service = 2;
 }
 
-// Monitoring //////////////////////////////////////////////////////////////////////
+// Monitoring ////////////////////////////////////////////////////////////////////////
 
 message ResourcesRes {
     Timestamp start = 1; // time of the beginning
