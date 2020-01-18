@@ -551,6 +551,14 @@ message AppStatusRes {
     AppConfig config = 6;
     map<string, string> environmentVariables = 7;
     string vcapServices = 8;
+    repeated PodStatus pods = 9;
+}
+
+message PodStatus {
+    ServiceState state = 1;
+    string name = 2;
+    string ram = 3;
+    string cpu = 4;
 }
 
 message AppCreateReq {
