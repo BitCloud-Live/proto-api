@@ -555,11 +555,10 @@ message AppStatusRes {
 }
 
 message PodStatus {
-    ServiceState state = 1;
-    Timestamp created = 2;
-    string name = 3;
-    string ram = 4;
-    string cpu = 5;
+    Timestamp created = 1;
+    string name = 2;
+    string ram = 3;
+    string cpu = 4;
 }
 
 message AppCreateReq {
