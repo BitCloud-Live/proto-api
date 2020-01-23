@@ -491,6 +491,7 @@ message Plan {
     string description = 2;
     uint64 price = 3;
     uint64 off = 4;
+    map<string, string> extras = 7;
 }
 
 message SrvStatusRes {

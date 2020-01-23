@@ -487,60 +487,6 @@ func local_request_YB_VolumeSpecList_0(ctx context.Context, marshaler runtime.Ma
 
 }
 
-func request_YB_VolumeSpecInfo_0(ctx context.Context, marshaler runtime.Marshaler, client YBClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Identity
-	var metadata runtime.ServerMetadata
-
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["name"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
-	}
-
-	protoReq.Name, err = runtime.String(val)
-
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
-	}
-
-	msg, err := client.VolumeSpecInfo(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
-
-}
-
-func local_request_YB_VolumeSpecInfo_0(ctx context.Context, marshaler runtime.Marshaler, server YBServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Identity
-	var metadata runtime.ServerMetadata
-
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["name"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
-	}
-
-	protoReq.Name, err = runtime.String(val)
-
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
-	}
-
-	msg, err := server.VolumeSpecInfo(ctx, &protoReq)
-	return msg, metadata, err
-
-}
-
 var (
 	filter_YB_VolumeList_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 )
@@ -749,26 +695,19 @@ func local_request_YB_ImgList_0(ctx context.Context, marshaler runtime.Marshaler
 
 }
 
+var (
+	filter_YB_ImgInfo_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+)
+
 func request_YB_ImgInfo_0(ctx context.Context, marshaler runtime.Marshaler, client YBClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Identity
 	var metadata runtime.ServerMetadata
 
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["name"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
-	protoReq.Name, err = runtime.String(val)
-
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_YB_ImgInfo_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := client.ImgInfo(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -780,25 +719,44 @@ func local_request_YB_ImgInfo_0(ctx context.Context, marshaler runtime.Marshaler
 	var protoReq Identity
 	var metadata runtime.ServerMetadata
 
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["name"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
-	}
-
-	protoReq.Name, err = runtime.String(val)
-
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_YB_ImgInfo_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := server.ImgInfo(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+var (
+	filter_YB_ImgDelete_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+)
+
+func request_YB_ImgDelete_0(ctx context.Context, marshaler runtime.Marshaler, client YBClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq Identity
+	var metadata runtime.ServerMetadata
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_YB_ImgDelete_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.ImgDelete(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_YB_ImgDelete_0(ctx context.Context, marshaler runtime.Marshaler, server YBServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq Identity
+	var metadata runtime.ServerMetadata
+
+	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_YB_ImgDelete_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.ImgDelete(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -837,26 +795,19 @@ func local_request_YB_ImgBuild_0(ctx context.Context, marshaler runtime.Marshale
 
 }
 
+var (
+	filter_YB_ImgBuildLog_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+)
+
 func request_YB_ImgBuildLog_0(ctx context.Context, marshaler runtime.Marshaler, client YBClient, req *http.Request, pathParams map[string]string) (YB_ImgBuildLogClient, runtime.ServerMetadata, error) {
 	var protoReq Identity
 	var metadata runtime.ServerMetadata
 
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["name"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
-	protoReq.Name, err = runtime.String(val)
-
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_YB_ImgBuildLog_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	stream, err := client.ImgBuildLog(ctx, &protoReq)
@@ -872,56 +823,35 @@ func request_YB_ImgBuildLog_0(ctx context.Context, marshaler runtime.Marshaler, 
 
 }
 
-func request_YB_ImgDelete_0(ctx context.Context, marshaler runtime.Marshaler, client YBClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+var (
+	filter_YB_ImgBuildLogTail_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+)
+
+func request_YB_ImgBuildLogTail_0(ctx context.Context, marshaler runtime.Marshaler, client YBClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Identity
 	var metadata runtime.ServerMetadata
 
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["name"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_YB_ImgBuildLogTail_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	protoReq.Name, err = runtime.String(val)
-
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
-	}
-
-	msg, err := client.ImgDelete(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.ImgBuildLogTail(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_YB_ImgDelete_0(ctx context.Context, marshaler runtime.Marshaler, server YBServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_YB_ImgBuildLogTail_0(ctx context.Context, marshaler runtime.Marshaler, server YBServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Identity
 	var metadata runtime.ServerMetadata
 
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["name"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_YB_ImgBuildLogTail_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	protoReq.Name, err = runtime.String(val)
-
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
-	}
-
-	msg, err := server.ImgDelete(ctx, &protoReq)
+	msg, err := server.ImgBuildLogTail(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -1638,6 +1568,60 @@ func request_YB_AppLog_0(ctx context.Context, marshaler runtime.Marshaler, clien
 	}
 	metadata.HeaderMD = header
 	return stream, metadata, nil
+
+}
+
+func request_YB_AppLogTail_0(ctx context.Context, marshaler runtime.Marshaler, client YBClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq Identity
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.AppLogTail(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_YB_AppLogTail_0(ctx context.Context, marshaler runtime.Marshaler, server YBServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq Identity
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.AppLogTail(ctx, &protoReq)
+	return msg, metadata, err
 
 }
 
@@ -2363,26 +2347,6 @@ func RegisterYBHandlerServer(ctx context.Context, mux *runtime.ServeMux, server 
 
 	})
 
-	mux.Handle("GET", pattern_YB_VolumeSpecInfo_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := local_request_YB_VolumeSpecInfo_0(rctx, inboundMarshaler, server, req, pathParams)
-		ctx = runtime.NewServerMetadataContext(ctx, md)
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-
-		forward_YB_VolumeSpecInfo_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
-	})
-
 	mux.Handle("GET", pattern_YB_VolumeList_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -2503,6 +2467,26 @@ func RegisterYBHandlerServer(ctx context.Context, mux *runtime.ServeMux, server 
 
 	})
 
+	mux.Handle("DELETE", pattern_YB_ImgDelete_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_YB_ImgDelete_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_YB_ImgDelete_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("POST", pattern_YB_ImgBuild_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -2530,7 +2514,7 @@ func RegisterYBHandlerServer(ctx context.Context, mux *runtime.ServeMux, server 
 		return
 	})
 
-	mux.Handle("DELETE", pattern_YB_ImgDelete_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_YB_ImgBuildLogTail_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -2539,14 +2523,14 @@ func RegisterYBHandlerServer(ctx context.Context, mux *runtime.ServeMux, server 
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_YB_ImgDelete_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_YB_ImgBuildLogTail_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_YB_ImgDelete_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_YB_ImgBuildLogTail_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -2690,7 +2674,7 @@ func RegisterYBHandlerServer(ctx context.Context, mux *runtime.ServeMux, server 
 
 	})
 
-	mux.Handle("GET", pattern_YB_SrvStart_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_YB_SrvStart_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -2710,7 +2694,7 @@ func RegisterYBHandlerServer(ctx context.Context, mux *runtime.ServeMux, server 
 
 	})
 
-	mux.Handle("GET", pattern_YB_SrvStop_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_YB_SrvStop_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -2877,7 +2861,27 @@ func RegisterYBHandlerServer(ctx context.Context, mux *runtime.ServeMux, server 
 		return
 	})
 
-	mux.Handle("PUT", pattern_YB_AppConfigSet_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_YB_AppLogTail_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_YB_AppLogTail_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_YB_AppLogTail_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_YB_AppConfigSet_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -2957,7 +2961,7 @@ func RegisterYBHandlerServer(ctx context.Context, mux *runtime.ServeMux, server 
 
 	})
 
-	mux.Handle("GET", pattern_YB_AppReset_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_YB_AppReset_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -2977,7 +2981,7 @@ func RegisterYBHandlerServer(ctx context.Context, mux *runtime.ServeMux, server 
 
 	})
 
-	mux.Handle("GET", pattern_YB_AppStop_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_YB_AppStop_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -2997,7 +3001,7 @@ func RegisterYBHandlerServer(ctx context.Context, mux *runtime.ServeMux, server 
 
 	})
 
-	mux.Handle("GET", pattern_YB_AppStart_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_YB_AppStart_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -3398,26 +3402,6 @@ func RegisterYBHandlerClient(ctx context.Context, mux *runtime.ServeMux, client 
 
 	})
 
-	mux.Handle("GET", pattern_YB_VolumeSpecInfo_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req)
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := request_YB_VolumeSpecInfo_0(rctx, inboundMarshaler, client, req, pathParams)
-		ctx = runtime.NewServerMetadataContext(ctx, md)
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-
-		forward_YB_VolumeSpecInfo_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
-	})
-
 	mux.Handle("GET", pattern_YB_VolumeList_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -3538,6 +3522,26 @@ func RegisterYBHandlerClient(ctx context.Context, mux *runtime.ServeMux, client 
 
 	})
 
+	mux.Handle("DELETE", pattern_YB_ImgDelete_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_YB_ImgDelete_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_YB_ImgDelete_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("POST", pattern_YB_ImgBuild_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -3578,7 +3582,7 @@ func RegisterYBHandlerClient(ctx context.Context, mux *runtime.ServeMux, client 
 
 	})
 
-	mux.Handle("DELETE", pattern_YB_ImgDelete_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_YB_ImgBuildLogTail_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -3587,14 +3591,14 @@ func RegisterYBHandlerClient(ctx context.Context, mux *runtime.ServeMux, client 
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_YB_ImgDelete_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_YB_ImgBuildLogTail_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_YB_ImgDelete_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_YB_ImgBuildLogTail_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -3738,7 +3742,7 @@ func RegisterYBHandlerClient(ctx context.Context, mux *runtime.ServeMux, client 
 
 	})
 
-	mux.Handle("GET", pattern_YB_SrvStart_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_YB_SrvStart_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -3758,7 +3762,7 @@ func RegisterYBHandlerClient(ctx context.Context, mux *runtime.ServeMux, client 
 
 	})
 
-	mux.Handle("GET", pattern_YB_SrvStop_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_YB_SrvStop_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -3938,7 +3942,27 @@ func RegisterYBHandlerClient(ctx context.Context, mux *runtime.ServeMux, client 
 
 	})
 
-	mux.Handle("PUT", pattern_YB_AppConfigSet_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_YB_AppLogTail_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_YB_AppLogTail_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_YB_AppLogTail_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_YB_AppConfigSet_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -4018,7 +4042,7 @@ func RegisterYBHandlerClient(ctx context.Context, mux *runtime.ServeMux, client 
 
 	})
 
-	mux.Handle("GET", pattern_YB_AppReset_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_YB_AppReset_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -4038,7 +4062,7 @@ func RegisterYBHandlerClient(ctx context.Context, mux *runtime.ServeMux, client 
 
 	})
 
-	mux.Handle("GET", pattern_YB_AppStop_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_YB_AppStop_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -4058,7 +4082,7 @@ func RegisterYBHandlerClient(ctx context.Context, mux *runtime.ServeMux, client 
 
 	})
 
-	mux.Handle("GET", pattern_YB_AppStart_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_YB_AppStart_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -4202,17 +4226,17 @@ func RegisterYBHandlerClient(ctx context.Context, mux *runtime.ServeMux, client 
 }
 
 var (
-	pattern_YB_Login_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "auth", "login"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_Login_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "auth", "_login"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_Logout_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "auth", "logout"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_Logout_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "auth", "_logout"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_YB_MonitoringResources_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v2", "monitoring", "name"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_MonitoringQueriesTraffic_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"v2", "monitoring", "queries", "traffic", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_MonitoringQueriesTraffic_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"v2", "monitoring", "_queries", "_traffic", "name"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_MonitoringQueriesLatency_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"v2", "monitoring", "queries", "latency", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_MonitoringQueriesLatency_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"v2", "monitoring", "_queries", "_latency", "name"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_ActivityList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "monitoring", "activity"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_ActivityList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "monitoring", "_activity"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_YB_DomainList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v2", "domain"}, "", runtime.AssumeColonVerbOpt(true)))
 
@@ -4224,8 +4248,6 @@ var (
 
 	pattern_YB_VolumeSpecList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v2", "volume-spec"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_VolumeSpecInfo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v2", "volume-spec", "name"}, "", runtime.AssumeColonVerbOpt(true)))
-
 	pattern_YB_VolumeList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v2", "volume"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_YB_VolumeInfo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v2", "volume", "name"}, "", runtime.AssumeColonVerbOpt(true)))
@@ -4236,13 +4258,15 @@ var (
 
 	pattern_YB_ImgList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v2", "image"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_ImgInfo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v2", "image", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_ImgInfo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "image", "_info"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_ImgBuild_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v2", "image"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_ImgDelete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v2", "image"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_ImgBuildLog_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v2", "image", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_ImgBuild_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "image", "_build"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_ImgDelete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v2", "image", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_ImgBuildLog_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v2", "image", "_build", "_log"}, "", runtime.AssumeColonVerbOpt(true)))
+
+	pattern_YB_ImgBuildLogTail_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 2, 4}, []string{"v2", "image", "_build", "_log", "_tail"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_YB_PrdList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v2", "product"}, "", runtime.AssumeColonVerbOpt(true)))
 
@@ -4256,15 +4280,15 @@ var (
 
 	pattern_YB_SrvDestroy_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v2", "service", "name"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_SrvChangePlan_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "service", "plan"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_SrvChangePlan_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "service", "_plan"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_SrvStart_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v2", "service", "start", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_SrvStart_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v2", "service", "_start", "name"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_SrvStop_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v2", "service", "stop", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_SrvStop_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v2", "service", "_stop", "name"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_SrvAttachDomain_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "service", "domain"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_SrvAttachDomain_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "service", "_domain"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_SrvDetachDomain_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "service", "domain"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_SrvDetachDomain_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "service", "_domain"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_YB_AppList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v2", "application"}, "", runtime.AssumeColonVerbOpt(true)))
 
@@ -4274,35 +4298,37 @@ var (
 
 	pattern_YB_AppDestroy_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v2", "application", "name"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_AppChangePlan_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "plan"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_AppChangePlan_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "_plan"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_AppLog_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v2", "application", "log", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_AppLog_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v2", "application", "_log", "name"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_AppConfigSet_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "config"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_AppLogTail_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"v2", "application", "_log", "_tail", "name"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_AppConfigUnset_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "config"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_AppConfigSet_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "_config"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_AppAddEnvironmentVariable_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "environment-variable"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_AppConfigUnset_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "_config"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_AppRemoveEnvironmentVariable_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "environment-variable"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_AppAddEnvironmentVariable_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "_environment-variable"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_AppReset_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v2", "application", "reset", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_AppRemoveEnvironmentVariable_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "_environment-variable"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_AppStop_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v2", "application", "stop", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_AppReset_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v2", "application", "_reset", "name"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_AppStart_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v2", "application", "start", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_AppStop_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v2", "application", "_stop", "name"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_AppAttachVolume_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "volume"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_AppStart_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v2", "application", "_start", "name"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_AppDetachVolume_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "volume"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_AppAttachVolume_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "_volume"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_AppAttachDomain_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "domain"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_AppDetachVolume_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "_volume"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_AppDetachDomain_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "domain"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_AppAttachDomain_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "_domain"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_AppSrvBind_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "service"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_AppDetachDomain_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "_domain"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_AppSrvUnBind_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "service"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_AppSrvBind_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "_service"}, "", runtime.AssumeColonVerbOpt(true)))
+
+	pattern_YB_AppSrvUnBind_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "_service"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (
@@ -4328,8 +4354,6 @@ var (
 
 	forward_YB_VolumeSpecList_0 = runtime.ForwardResponseMessage
 
-	forward_YB_VolumeSpecInfo_0 = runtime.ForwardResponseMessage
-
 	forward_YB_VolumeList_0 = runtime.ForwardResponseMessage
 
 	forward_YB_VolumeInfo_0 = runtime.ForwardResponseMessage
@@ -4342,11 +4366,13 @@ var (
 
 	forward_YB_ImgInfo_0 = runtime.ForwardResponseMessage
 
+	forward_YB_ImgDelete_0 = runtime.ForwardResponseMessage
+
 	forward_YB_ImgBuild_0 = runtime.ForwardResponseMessage
 
 	forward_YB_ImgBuildLog_0 = runtime.ForwardResponseStream
 
-	forward_YB_ImgDelete_0 = runtime.ForwardResponseMessage
+	forward_YB_ImgBuildLogTail_0 = runtime.ForwardResponseMessage
 
 	forward_YB_PrdList_0 = runtime.ForwardResponseMessage
 
@@ -4381,6 +4407,8 @@ var (
 	forward_YB_AppChangePlan_0 = runtime.ForwardResponseMessage
 
 	forward_YB_AppLog_0 = runtime.ForwardResponseStream
+
+	forward_YB_AppLogTail_0 = runtime.ForwardResponseMessage
 
 	forward_YB_AppConfigSet_0 = runtime.ForwardResponseMessage
 
