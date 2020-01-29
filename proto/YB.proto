@@ -217,11 +217,6 @@ service YB {
             post: "/v2/application/_config"
             body: "*" };
     }
-    rpc AppConfigUnset (UnsetReq) returns (AppStatusRes) {
-        option (google.api.http) = {
-            delete: "/v2/application/_config"
-             };
-    }
     rpc AppAddEnvironmentVariable (AppAddEnvironmentVariableReq) returns (AppStatusRes) {
         option (google.api.http) = {
             post: "/v2/application/_environment-variable"
