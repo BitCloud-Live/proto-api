@@ -173,6 +173,11 @@ service YB {
             delete: "/v2/service/_domain"
              };
     }
+    rpc SrvOperator (PunchedCard) returns (SrvStatusRes) {
+        option (google.api.http) = {
+            post: "/v2/service/_operator"
+             };
+    }
     rpc SrvPortforward (Identity) returns (PortforwardRes) {}
     //Added in v2.1 patch
     rpc SrvConfigSet (SrvConfigSetReq) returns (SrvStatusRes) {} 
@@ -505,6 +510,12 @@ message SrvStatusRes {
     string serviceRefrence = 10;
     //Name(s) of the peer(s) that this service instance bounded to
     repeated string boundTo = 11;
+}
+
+message PunchedCard {
+    string name = 1;
+    string oprator = 2;
+    map<string, string> variable = 3;
 }
 
 //For embedded response
