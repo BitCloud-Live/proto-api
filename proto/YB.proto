@@ -244,6 +244,11 @@ service YB {
         option (google.api.http) = {
             post: "/v2/application/_start/{name}" };
     }
+    rpc AppShell(ShellReq) returns (ShellRes) { // Execute commands inside an existing application
+        option (google.api.http) = {
+            post: "/v2/application/_shell"
+            body: "*" };
+    }
     rpc AppAttachVolume (VolumeAttachReq) returns (AppStatusRes) {
         option (google.api.http) = {
             post: "/v2/application/_volume"
@@ -585,6 +590,16 @@ message AppConfig {
     uint64 port = 3;
     repeated string routes = 4;
     string endpointType = 5;
+}
+
+// Execute commands inside an existing application
+message ShellReq {
+    string name = 1;
+    string command = 2;
+}
+
+message ShellRes {
+    string name = 1;
 }
 
 message UnsetReq {
