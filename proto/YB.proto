@@ -113,7 +113,7 @@ service YB {
         option (google.api.http) = {
             get: "/v2/image/_build/_log" };
     }
-    rpc ImgBuildLogTail (Identity) returns (Chunk) {
+    rpc ImgBuildLogTail (TailRequest) returns (Chunk) {
         option (google.api.http) = {
             get: "/v2/image/_build/_log/_tail" };
     }
@@ -213,7 +213,7 @@ service YB {
         option (google.api.http) = {
             get: "/v2/application/_log/{name}" };
     }
-    rpc AppLogTail (Identity) returns (Chunk) {
+    rpc AppLogTail (TailRequest) returns (Chunk) {
         option (google.api.http) = {
             get: "/v2/application/_log/_tail/{name}" };
     }
@@ -244,7 +244,8 @@ service YB {
         option (google.api.http) = {
             post: "/v2/application/_start/{name}" };
     }
-    rpc AppShell(ShellReq) returns (ShellRes) { // Execute commands inside an existing application
+    //TTY disable for now
+    rpc AppShell(ShellReq) returns (Chunk) { 
         option (google.api.http) = {
             post: "/v2/application/_shell"
             body: "*" };
@@ -592,14 +593,19 @@ message AppConfig {
     string endpointType = 5;
 }
 
+// name for select [application, image]
+message TailRequest {
+    string name = 1;
+    //The length of time (like 5s, 2m, or 3h, higher than zero), default to 0s.
+    string since = 2; 
+    uint64 tail = 3;
+
+}
+
 // Execute commands inside an existing application
 message ShellReq {
     string name = 1;
-    string command = 2;
-}
-
-message ShellRes {
-    string name = 1;
+    repeated string command = 2;
 }
 
 message UnsetReq {
