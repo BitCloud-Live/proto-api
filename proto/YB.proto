@@ -13,7 +13,15 @@ service YB {
         option (google.api.http) = {
             get: "/v2/auth/_logout" };
     }
-
+    rpc UserGetInfo (Empty) returns (User) {
+        option (google.api.http) = {
+            get: "/v2/user" };
+    }
+    rpc UserSetInfo (User) returns (User) {
+        option (google.api.http) = {
+            post: "/v2/user"
+            body: "*" };
+    }
 
 
     // Monitoring
@@ -295,6 +303,16 @@ message LoginReq {
 
 message AuthenticationRes {
     string token = 1;
+}
+
+message User {
+    int32 cash = 1;
+    string username = 2;
+    string email = 3;
+    string plan = 4;
+    string address = 5;
+    string code = 6;    
+    string mobi = 7;
 }
 
 // Genral messages  //////////////////////////////////////////////////////////////////
