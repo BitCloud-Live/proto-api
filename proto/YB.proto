@@ -24,6 +24,7 @@ service YB {
     }
 
 
+
     // Monitoring
     rpc MonitoringQuota(Empty) returns (ResourcesRes) { 
         option (google.api.http) = {
@@ -41,7 +42,6 @@ service YB {
         option (google.api.http) = {
             get: "/v2/monitoring/_queries/_latency/{name}" };
     }
-    
     rpc ActivityList(ActivityReq) returns (ActivityListRes) {
         option (google.api.http) = {
             post: "/v2/monitoring/_activity"
@@ -61,7 +61,7 @@ service YB {
     } 
     rpc DomainToggleTLS (Identity) returns (DomainStatusRes) {
         option (google.api.http) = {
-            get: "/v2/domain/{name}" };
+            post: "/v2/domain/_toggle-tls/{name}" };
     } 
     rpc DomainCreate (DomainCreateReq) returns (DomainStatusRes) {
         option (google.api.http) = {
@@ -226,10 +226,7 @@ service YB {
             post: "/v2/application/_plan"
             body: "*" };
     }
-    rpc AppLog (Identity) returns (stream Chunk) {
-        option (google.api.http) = {
-            get: "/v2/application/_log/{name}" };
-    }
+    rpc AppLog (Identity) returns (stream Chunk) { }
     rpc AppLogTail (TailRequest) returns (Chunk) {
         option (google.api.http) = {
             get: "/v2/application/_log/_tail/{name}" };
@@ -244,7 +241,6 @@ service YB {
             delete: "/v2/application/_config"
              };
     } 
-
     rpc AppAddEnvironmentVariable (AppAddEnvironmentVariableReq) returns (AppStatusRes) {
         option (google.api.http) = {
             post: "/v2/application/_environment-variable"
@@ -303,7 +299,6 @@ service YB {
             delete: "/v2/application/_service"
              };
     }
-
 }
 
 // Authentication ////////////////////////////////////////////////////////////////////
@@ -326,13 +321,10 @@ message Account {
     string code = 6;    
     string mobi = 7;
     //variables will be skipped in a update request
-    map<string, Variable> variables = 8;
-    map<string, string> values = 9;
+    map<string, GeneralVariable> variables = 8;
 }
 
 // Genral messages  //////////////////////////////////////////////////////////////////
-
-
 
 message Empty { }
 
@@ -354,18 +346,18 @@ message Timestamp {
     int32 nanos = 2;
 }
 
-message Variable{
+message GeneralVariable {
     string name = 1;
-    string defaultValue = 2;
-    bool isRequired = 3;
-    bool updateable = 4;
-    string type = 5;
-    string description = 6;
-    repeated string choices = 7;
+    string value = 2;
+    string defaultValue = 3;
+    bool isRequired = 4;
+    bool updateable = 5;
+    string type = 6;
+    string description = 7;
+    repeated string choices = 8;
 }
 
-
-message AttachIdentity{
+message AttachIdentity {
     string name = 1;
     string attachment = 2;
 }
@@ -411,7 +403,6 @@ message DomainStatusRes {
     map<string, string> attachedTo = 6;
     //Added in v2.3 patch
     string path = 7;
-
 }
 
 message DomainListRes {
@@ -502,11 +493,12 @@ message ServiceCondition{
     string reason = 2;
     Timestamp time = 3;
 }
+
 message ProductRes {
     string name = 1;
     string description = 2;
     repeated Plan plan = 3;
-    map<string, Variable> variables = 4;
+    map<string, GeneralVariable> variables = 4;
 }
 
 message ProductListRow {
@@ -518,7 +510,6 @@ message PrdListRes {
     int32 index = 1; // [default = 0]
     repeated ProductListRow rows = 2;
 }
-
 
 //TODO reset Variable 
 message SrvConfigSetReq{
@@ -548,9 +539,7 @@ message SrvStatusRes {
     string serviceRefrence = 9;
     //Name(s) of the peer(s) that this service instance bounded to
     repeated string boundTo = 10;
-    map<string, Variable> variables = 11;
-    map<string, string> values = 12;
-
+    map<string, GeneralVariable> variables = 11;
 }
 
 message PunchedCard {
@@ -597,12 +586,11 @@ message AppStatusRes {
     string name = 3;
     string plan = 4;
     string vcapServices = 5;
-    repeated Instance instances = 6;
-    map<string, Variable> variables = 7;
-    map<string, string> values = 8;
-    map<string, string> environmentVariables = 9;
-    repeated ServiceCondition conditions = 10;
-    repeated string routes = 11;
+    map<string, GeneralVariable> variables = 6;
+    map<string, string> environmentVariables = 7;
+    repeated Instance instances = 8;
+    repeated ServiceCondition conditions = 9;
+    repeated string routes = 10;
 }
 
 message Instance {
@@ -618,14 +606,12 @@ message AppCreateReq {
     map<string, string> values = 3;
 }
 
-
 // name for select [application, image]
 message TailRequest {
     string name = 1;
     //The length of time (like 5s, 2m, or 3h, higher than zero), default to 0s.
     string since = 2; 
     uint64 tail = 3;
-
 }
 
 // Execute commands inside an existing application
