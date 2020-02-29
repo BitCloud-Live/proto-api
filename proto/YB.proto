@@ -13,11 +13,11 @@ service YB {
         option (google.api.http) = {
             get: "/v2/auth/_logout" };
     }
-    rpc UserGetInfo (Empty) returns (User) {
+    rpc AccountInfo (Empty) returns (Account) {
         option (google.api.http) = {
             get: "/v2/user" };
     }
-    rpc UserSetInfo (User) returns (User) {
+    rpc AccountUpdate (Account) returns (Account) {
         option (google.api.http) = {
             post: "/v2/user"
             body: "*" };
@@ -25,18 +25,23 @@ service YB {
 
 
     // Monitoring
-    rpc MonitoringResources(Identity) returns (ResourcesRes) { // (App OR Srv)
+    rpc MonitoringQuota(Empty) returns (ResourcesRes) { 
+        option (google.api.http) = {
+            get: "/v2/monitoring/_quota" };
+    }
+    rpc MonitoringResource(Identity) returns (ResourcesRes) { // (App OR Srv)
         option (google.api.http) = {
             get: "/v2/monitoring/{name}" };
     }
-    rpc MonitoringQueriesTraffic(Identity) returns (TrafficRes) { // (only App)
+    rpc MonitoringTraffic(Identity) returns (TrafficRes) { // (only App)
         option (google.api.http) = {
             get: "/v2/monitoring/_queries/_traffic/{name}" };
     }
-    rpc MonitoringQueriesLatency(Identity) returns (LatencyRes) { // (only App)
+    rpc MonitoringLatency(Identity) returns (LatencyRes) { // (only App)
         option (google.api.http) = {
             get: "/v2/monitoring/_queries/_latency/{name}" };
     }
+    
     rpc ActivityList(ActivityReq) returns (ActivityListRes) {
         option (google.api.http) = {
             post: "/v2/monitoring/_activity"
@@ -51,6 +56,10 @@ service YB {
             get: "/v2/domain" };
     }
     rpc DomainInfo (Identity) returns (DomainStatusRes) {
+        option (google.api.http) = {
+            get: "/v2/domain/{name}" };
+    } 
+    rpc DomainToggleTLS (Identity) returns (DomainStatusRes) {
         option (google.api.http) = {
             get: "/v2/domain/{name}" };
     } 
@@ -225,11 +234,17 @@ service YB {
         option (google.api.http) = {
             get: "/v2/application/_log/_tail/{name}" };
     }
-    rpc AppConfigSet (ConfigSetReq) returns (AppStatusRes) {
+    rpc AppConfigSet (SrvConfigSetReq) returns (AppStatusRes) {
         option (google.api.http) = {
             post: "/v2/application/_config"
             body: "*" };
     }
+    rpc AppConfigUnset (UnsetReq) returns (AppStatusRes) {
+        option (google.api.http) = {
+            delete: "/v2/application/_config"
+             };
+    } 
+
     rpc AppAddEnvironmentVariable (AppAddEnvironmentVariableReq) returns (AppStatusRes) {
         option (google.api.http) = {
             post: "/v2/application/_environment-variable"
@@ -258,7 +273,7 @@ service YB {
             post: "/v2/application/_shell"
             body: "*" };
     }
-    rpc AppAttachVolume (VolumeAttachReq) returns (AppStatusRes) {
+    rpc AppAttachVolume (VolumeMount) returns (AppStatusRes) {
         option (google.api.http) = {
             post: "/v2/application/_volume"
             body: "*" };
@@ -289,9 +304,6 @@ service YB {
              };
     }
 
-    //Added in v2.1 patch
-    //AppNFSPortforward Deprecated: will be deleted in v3.0
-    rpc AppNFSPortforward (Identity) returns (PortforwardRes) {}
 }
 
 // Authentication ////////////////////////////////////////////////////////////////////
@@ -305,26 +317,22 @@ message AuthenticationRes {
     string token = 1;
 }
 
-message User {
-    int32 cash = 1;
+message Account {
+    string credits = 1;
     string username = 2;
     string email = 3;
     string plan = 4;
     string address = 5;
     string code = 6;    
     string mobi = 7;
+    //variables will be skipped in a update request
+    map<string, Variable> variables = 8;
+    map<string, string> values = 9;
 }
 
 // Genral messages  //////////////////////////////////////////////////////////////////
 
-enum ServiceState {
-    Err = 0;
-    Up = 1;
-    Stop = 2;
-    Suspend = 3;
-    Pending = 4;
-    Unknown = 5;
-}
+
 
 message Empty { }
 
@@ -345,6 +353,17 @@ message Timestamp {
     // inclusive.
     int32 nanos = 2;
 }
+
+message Variable{
+    string name = 1;
+    string defaultValue = 2;
+    bool isRequired = 3;
+    bool updateable = 4;
+    string type = 5;
+    string description = 6;
+    repeated string choices = 7;
+}
+
 
 message AttachIdentity{
     string name = 1;
@@ -425,7 +444,7 @@ message VolumeCreateReq {
     string spec = 2;
 }
 
-message VolumeAttachReq{
+message VolumeMount{
     string name = 1;
     string attachment = 2;
     string mountPath = 3;
@@ -447,8 +466,7 @@ message VolumeStatusRes {
     Timestamp updated = 2;
     string name = 3;
     VolumeSpec spec = 4;
-    string attachedTo = 5;
-    string mountPath = 6;
+    repeated VolumeMount mounts = 5;
 }
 
 message VolumeListRes{
@@ -479,11 +497,16 @@ message ImgBuildReq {
 
 // Service ///////////////////////////////////////////////////////////////////////////
 
+message ServiceCondition{
+    string condition = 1;
+    string reason = 2;
+    Timestamp time = 3;
+}
 message ProductRes {
     string name = 1;
     string description = 2;
     repeated Plan plan = 3;
-    map<string, ProductVariable> variables = 4;
+    map<string, Variable> variables = 4;
 }
 
 message ProductListRow {
@@ -496,18 +519,11 @@ message PrdListRes {
     repeated ProductListRow rows = 2;
 }
 
-message ProductVariable{
-       string name = 1;
-       string defaultValue = 2;
-       bool isRequired = 3;
-       string type = 4;
-       string description = 5;
-}
 
-//TODO reset ProductVariable 
+//TODO reset Variable 
 message SrvConfigSetReq{
     string name = 1;
-    map<string, string> variables = 2;
+    map<string, string> values = 2;
 }
 
 message Plan {
@@ -521,35 +537,37 @@ message Plan {
 message SrvStatusRes {
     Timestamp created = 1;
     Timestamp updated = 2;
-    ServiceState state = 3;
+    repeated ServiceCondition conditions = 3;
     string name = 4;
     string plan = 5;
     string vcapServices = 6;
-    // used for information of service like: [ports, uri, username, ...]
-    map<string, string> variable = 7;
-    repeated AttachedDomainInfo domains = 8;
-    repeated string endpoints = 9;
+    repeated AttachedDomainInfo domains = 7;
+    repeated string endpoints = 8;
 
     //Added in v2.1 patch
-    string serviceRefrence = 10;
+    string serviceRefrence = 9;
     //Name(s) of the peer(s) that this service instance bounded to
-    repeated string boundTo = 11;
+    repeated string boundTo = 10;
+    map<string, Variable> variables = 11;
+    map<string, string> values = 12;
+
 }
 
 message PunchedCard {
     string name = 1;
     string oprator = 2;
-    map<string, string> variable = 3;
+    map<string, string> values = 3;
 }
 
 //For embedded response
 message ServiceRes {
     Timestamp updated = 1;
-    ServiceState state = 2;
-    string name = 3;
+    string name = 2;
     //Added in v2.1 patch
-    string serviceRefrence = 4;
-    string plan = 5;
+    string serviceRefrence = 3;
+    string plan = 4;
+    //Latest condition
+    ServiceCondition condition = 5;
 }
 
 message SrvListRes {
@@ -568,7 +586,7 @@ message SrvCreateReq {
     string productName = 1;
     string name = 2;
     string plan = 3;
-    map<string, string> variable = 4;
+    map<string, string> values = 4;
 }
 
 // Application  //////////////////////////////////////////////////////////////////////
@@ -576,16 +594,18 @@ message SrvCreateReq {
 message AppStatusRes {
     Timestamp created = 1;
     Timestamp updated = 2;
-    ServiceState state = 3;
-    string name = 4;
-    string plan = 5;
-    AppConfig config = 6;
-    map<string, string> environmentVariables = 7;
-    string vcapServices = 8;
-    repeated PodStatus pods = 9;
+    string name = 3;
+    string plan = 4;
+    string vcapServices = 5;
+    repeated Instance instances = 6;
+    map<string, Variable> variables = 7;
+    map<string, string> values = 8;
+    map<string, string> environmentVariables = 9;
+    repeated ServiceCondition conditions = 10;
+    repeated string routes = 11;
 }
 
-message PodStatus {
+message Instance {
     Timestamp created = 1;
     string name = 2;
     string ram = 3;
@@ -595,21 +615,9 @@ message PodStatus {
 message AppCreateReq {
     string name = 1;
     string plan = 2;
-    AppConfig config = 3;
+    map<string, string> values = 3;
 }
 
-message ConfigSetReq {
-    string name = 1;
-    AppConfig config = 2;
-}
-
-message AppConfig {
-    string image = 1;
-    uint64 minScale = 2;
-    uint64 port = 3;
-    repeated string routes = 4;
-    string endpointType = 5;
-}
 
 // name for select [application, image]
 message TailRequest {
