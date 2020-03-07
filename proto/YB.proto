@@ -70,8 +70,8 @@ service YB {
     }
     rpc DomainDelete (Identity) returns (Empty) {
         option (google.api.http) = {
-            delete: "/v2/domain/{name}"
-            };
+            delete: "/v2/domain"
+            body: "*" };
     }
     // //Added in v2.3 patch
     // rpc DomainAddRoute (Identity) returns (DomainStatusRes) { }
@@ -101,8 +101,8 @@ service YB {
     }
     rpc VolumeDelete (Identity) returns (Empty) {
         option (google.api.http) = {
-            delete: "/v2/volume/{name}"
-            };
+            delete: "/v2/volume"
+            body: "*" };
     }
     rpc VolumeFTPPortforward (Identity) returns (PortforwardRes) {}
 
@@ -188,7 +188,7 @@ service YB {
     rpc SrvDetachDomain (SrvDomainAttachReq) returns (SrvStatusRes) {
         option (google.api.http) = {
             delete: "/v2/service/_domain"
-             };
+            body: "*" };
     }
     rpc SrvOperator (PunchedCard) returns (SrvStatusRes) {
         option (google.api.http) = {
@@ -239,7 +239,7 @@ service YB {
     rpc AppConfigUnset (UnsetReq) returns (AppStatusRes) {
         option (google.api.http) = {
             delete: "/v2/application/_config"
-             };
+            body: "*" };
     } 
     rpc AppAddEnvironmentVariable (AppAddEnvironmentVariableReq) returns (AppStatusRes) {
         option (google.api.http) = {
@@ -249,7 +249,7 @@ service YB {
     rpc AppRemoveEnvironmentVariable (UnsetReq) returns (AppStatusRes) {
         option (google.api.http) = {
             delete: "/v2/application/_environment-variable"
-             };
+            body: "*" };
     }
     rpc AppReset (Identity) returns (AppStatusRes) {
         option (google.api.http) = {
@@ -277,7 +277,7 @@ service YB {
     rpc AppDetachVolume (AttachIdentity) returns (AppStatusRes) {
         option (google.api.http) = {
             delete: "/v2/application/_volume"
-             };
+            body: "*" };
     }
     rpc AppAttachDomain (SrvDomainAttachReq) returns (AppStatusRes) {
         option (google.api.http) = {
@@ -287,7 +287,7 @@ service YB {
     rpc AppDetachDomain (SrvDomainAttachReq) returns (AppStatusRes) {
         option (google.api.http) = {
             delete: "/v2/application/_domain"
-             };
+            body: "*" };
     }
     rpc AppSrvBind (AppSrvBindReq) returns (AppStatusRes) {
         option (google.api.http) = {
@@ -297,7 +297,7 @@ service YB {
     rpc AppSrvUnBind (AppSrvBindReq) returns (AppStatusRes) {
         option (google.api.http) = {
             delete: "/v2/application/_service"
-             };
+            body: "*" };
     }
 }
 
