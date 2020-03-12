@@ -167,11 +167,6 @@ service YB {
         option (google.api.http) = {
             delete: "/v2/service/{name}" };
     }
-    rpc SrvChangePlan (ChangePlanReq) returns (SrvStatusRes) {
-        option (google.api.http) = {
-            post: "/v2/service/_plan"
-            body: "*" };
-    }
     rpc SrvStart (Identity) returns (SrvStatusRes) {
         option (google.api.http) = {
             post: "/v2/service/_start/{name}" };
@@ -220,11 +215,6 @@ service YB {
         option (google.api.http) = {
             delete: "/v2/application/{name}"
              };
-    }
-    rpc AppChangePlan (ChangePlanReq) returns (AppStatusRes) {
-        option (google.api.http) = {
-            post: "/v2/application/_plan"
-            body: "*" };
     }
     rpc AppLog (Identity) returns (stream Chunk) { }
     rpc AppLogTail (TailRequest) returns (Chunk) {
@@ -623,11 +613,6 @@ message ShellReq {
 message UnsetReq {
     string name = 1;
     repeated string variables = 2;
-}
-
-message ChangePlanReq {
-    string name = 1;
-    string plan = 2;
 }
 
 message AppAddEnvironmentVariableReq {
