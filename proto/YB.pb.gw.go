@@ -528,22 +528,12 @@ func request_YB_DomainDelete_0(ctx context.Context, marshaler runtime.Marshaler,
 	var protoReq Identity
 	var metadata runtime.ServerMetadata
 
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["name"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
 	}
-
-	protoReq.Name, err = runtime.String(val)
-
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := client.DomainDelete(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -555,22 +545,12 @@ func local_request_YB_DomainDelete_0(ctx context.Context, marshaler runtime.Mars
 	var protoReq Identity
 	var metadata runtime.ServerMetadata
 
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["name"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
 	}
-
-	protoReq.Name, err = runtime.String(val)
-
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := server.DomainDelete(ctx, &protoReq)
@@ -736,22 +716,12 @@ func request_YB_VolumeDelete_0(ctx context.Context, marshaler runtime.Marshaler,
 	var protoReq Identity
 	var metadata runtime.ServerMetadata
 
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["name"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
 	}
-
-	protoReq.Name, err = runtime.String(val)
-
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := client.VolumeDelete(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -763,22 +733,12 @@ func local_request_YB_VolumeDelete_0(ctx context.Context, marshaler runtime.Mars
 	var protoReq Identity
 	var metadata runtime.ServerMetadata
 
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["name"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
 	}
-
-	protoReq.Name, err = runtime.String(val)
-
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := server.VolumeDelete(ctx, &protoReq)
@@ -1418,18 +1378,15 @@ func local_request_YB_SrvAttachDomain_0(ctx context.Context, marshaler runtime.M
 
 }
 
-var (
-	filter_YB_SrvDetachDomain_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
-)
-
 func request_YB_SrvDetachDomain_0(ctx context.Context, marshaler runtime.Marshaler, client YBClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq SrvDomainAttachReq
 	var metadata runtime.ServerMetadata
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_YB_SrvDetachDomain_0); err != nil {
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -1442,7 +1399,11 @@ func local_request_YB_SrvDetachDomain_0(ctx context.Context, marshaler runtime.M
 	var protoReq SrvDomainAttachReq
 	var metadata runtime.ServerMetadata
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_YB_SrvDetachDomain_0); err != nil {
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -1693,41 +1654,6 @@ func local_request_YB_AppChangePlan_0(ctx context.Context, marshaler runtime.Mar
 
 }
 
-func request_YB_AppLog_0(ctx context.Context, marshaler runtime.Marshaler, client YBClient, req *http.Request, pathParams map[string]string) (YB_AppLogClient, runtime.ServerMetadata, error) {
-	var protoReq Identity
-	var metadata runtime.ServerMetadata
-
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["name"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
-	}
-
-	protoReq.Name, err = runtime.String(val)
-
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
-	}
-
-	stream, err := client.AppLog(ctx, &protoReq)
-	if err != nil {
-		return nil, metadata, err
-	}
-	header, err := stream.Header()
-	if err != nil {
-		return nil, metadata, err
-	}
-	metadata.HeaderMD = header
-	return stream, metadata, nil
-
-}
-
 var (
 	filter_YB_AppLogTail_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
@@ -1831,18 +1757,15 @@ func local_request_YB_AppConfigSet_0(ctx context.Context, marshaler runtime.Mars
 
 }
 
-var (
-	filter_YB_AppConfigUnset_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
-)
-
 func request_YB_AppConfigUnset_0(ctx context.Context, marshaler runtime.Marshaler, client YBClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq UnsetReq
 	var metadata runtime.ServerMetadata
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_YB_AppConfigUnset_0); err != nil {
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -1855,7 +1778,11 @@ func local_request_YB_AppConfigUnset_0(ctx context.Context, marshaler runtime.Ma
 	var protoReq UnsetReq
 	var metadata runtime.ServerMetadata
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_YB_AppConfigUnset_0); err != nil {
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -1898,18 +1825,15 @@ func local_request_YB_AppAddEnvironmentVariable_0(ctx context.Context, marshaler
 
 }
 
-var (
-	filter_YB_AppRemoveEnvironmentVariable_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
-)
-
 func request_YB_AppRemoveEnvironmentVariable_0(ctx context.Context, marshaler runtime.Marshaler, client YBClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq UnsetReq
 	var metadata runtime.ServerMetadata
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_YB_AppRemoveEnvironmentVariable_0); err != nil {
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -1922,7 +1846,11 @@ func local_request_YB_AppRemoveEnvironmentVariable_0(ctx context.Context, marsha
 	var protoReq UnsetReq
 	var metadata runtime.ServerMetadata
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_YB_AppRemoveEnvironmentVariable_0); err != nil {
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -2161,18 +2089,15 @@ func local_request_YB_AppAttachVolume_0(ctx context.Context, marshaler runtime.M
 
 }
 
-var (
-	filter_YB_AppDetachVolume_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
-)
-
 func request_YB_AppDetachVolume_0(ctx context.Context, marshaler runtime.Marshaler, client YBClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq AttachIdentity
 	var metadata runtime.ServerMetadata
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_YB_AppDetachVolume_0); err != nil {
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -2185,7 +2110,11 @@ func local_request_YB_AppDetachVolume_0(ctx context.Context, marshaler runtime.M
 	var protoReq AttachIdentity
 	var metadata runtime.ServerMetadata
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_YB_AppDetachVolume_0); err != nil {
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -2228,18 +2157,15 @@ func local_request_YB_AppAttachDomain_0(ctx context.Context, marshaler runtime.M
 
 }
 
-var (
-	filter_YB_AppDetachDomain_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
-)
-
 func request_YB_AppDetachDomain_0(ctx context.Context, marshaler runtime.Marshaler, client YBClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq SrvDomainAttachReq
 	var metadata runtime.ServerMetadata
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_YB_AppDetachDomain_0); err != nil {
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -2252,7 +2178,11 @@ func local_request_YB_AppDetachDomain_0(ctx context.Context, marshaler runtime.M
 	var protoReq SrvDomainAttachReq
 	var metadata runtime.ServerMetadata
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_YB_AppDetachDomain_0); err != nil {
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -2295,18 +2225,15 @@ func local_request_YB_AppSrvBind_0(ctx context.Context, marshaler runtime.Marsha
 
 }
 
-var (
-	filter_YB_AppSrvUnBind_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
-)
-
 func request_YB_AppSrvUnBind_0(ctx context.Context, marshaler runtime.Marshaler, client YBClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq AppSrvBindReq
 	var metadata runtime.ServerMetadata
 
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_YB_AppSrvUnBind_0); err != nil {
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -2319,7 +2246,11 @@ func local_request_YB_AppSrvUnBind_0(ctx context.Context, marshaler runtime.Mars
 	var protoReq AppSrvBindReq
 	var metadata runtime.ServerMetadata
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_YB_AppSrvUnBind_0); err != nil {
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -2553,7 +2484,7 @@ func RegisterYBHandlerServer(ctx context.Context, mux *runtime.ServeMux, server 
 
 	})
 
-	mux.Handle("GET", pattern_YB_DomainToggleTLS_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_YB_DomainToggleTLS_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -2593,7 +2524,7 @@ func RegisterYBHandlerServer(ctx context.Context, mux *runtime.ServeMux, server 
 
 	})
 
-	mux.Handle("DELETE", pattern_YB_DomainDelete_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_YB_DomainDelete_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -2693,7 +2624,7 @@ func RegisterYBHandlerServer(ctx context.Context, mux *runtime.ServeMux, server 
 
 	})
 
-	mux.Handle("DELETE", pattern_YB_VolumeDelete_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_YB_VolumeDelete_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -3020,7 +2951,7 @@ func RegisterYBHandlerServer(ctx context.Context, mux *runtime.ServeMux, server 
 
 	})
 
-	mux.Handle("DELETE", pattern_YB_SrvDetachDomain_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_YB_SrvDetachDomain_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -3160,13 +3091,6 @@ func RegisterYBHandlerServer(ctx context.Context, mux *runtime.ServeMux, server 
 
 	})
 
-	mux.Handle("GET", pattern_YB_AppLog_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
-		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-		return
-	})
-
 	mux.Handle("GET", pattern_YB_AppLogTail_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -3207,7 +3131,7 @@ func RegisterYBHandlerServer(ctx context.Context, mux *runtime.ServeMux, server 
 
 	})
 
-	mux.Handle("DELETE", pattern_YB_AppConfigUnset_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_YB_AppConfigUnset_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -3247,7 +3171,7 @@ func RegisterYBHandlerServer(ctx context.Context, mux *runtime.ServeMux, server 
 
 	})
 
-	mux.Handle("DELETE", pattern_YB_AppRemoveEnvironmentVariable_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_YB_AppRemoveEnvironmentVariable_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -3367,7 +3291,7 @@ func RegisterYBHandlerServer(ctx context.Context, mux *runtime.ServeMux, server 
 
 	})
 
-	mux.Handle("DELETE", pattern_YB_AppDetachVolume_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_YB_AppDetachVolume_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -3407,7 +3331,7 @@ func RegisterYBHandlerServer(ctx context.Context, mux *runtime.ServeMux, server 
 
 	})
 
-	mux.Handle("DELETE", pattern_YB_AppDetachDomain_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_YB_AppDetachDomain_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -3447,7 +3371,7 @@ func RegisterYBHandlerServer(ctx context.Context, mux *runtime.ServeMux, server 
 
 	})
 
-	mux.Handle("DELETE", pattern_YB_AppSrvUnBind_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_YB_AppSrvUnBind_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -3728,7 +3652,7 @@ func RegisterYBHandlerClient(ctx context.Context, mux *runtime.ServeMux, client 
 
 	})
 
-	mux.Handle("GET", pattern_YB_DomainToggleTLS_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_YB_DomainToggleTLS_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -3768,7 +3692,7 @@ func RegisterYBHandlerClient(ctx context.Context, mux *runtime.ServeMux, client 
 
 	})
 
-	mux.Handle("DELETE", pattern_YB_DomainDelete_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_YB_DomainDelete_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -3868,7 +3792,7 @@ func RegisterYBHandlerClient(ctx context.Context, mux *runtime.ServeMux, client 
 
 	})
 
-	mux.Handle("DELETE", pattern_YB_VolumeDelete_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_YB_VolumeDelete_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -4208,7 +4132,7 @@ func RegisterYBHandlerClient(ctx context.Context, mux *runtime.ServeMux, client 
 
 	})
 
-	mux.Handle("DELETE", pattern_YB_SrvDetachDomain_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_YB_SrvDetachDomain_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -4348,26 +4272,6 @@ func RegisterYBHandlerClient(ctx context.Context, mux *runtime.ServeMux, client 
 
 	})
 
-	mux.Handle("GET", pattern_YB_AppLog_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req)
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := request_YB_AppLog_0(rctx, inboundMarshaler, client, req, pathParams)
-		ctx = runtime.NewServerMetadataContext(ctx, md)
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-
-		forward_YB_AppLog_0(ctx, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
-
-	})
-
 	mux.Handle("GET", pattern_YB_AppLogTail_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -4408,7 +4312,7 @@ func RegisterYBHandlerClient(ctx context.Context, mux *runtime.ServeMux, client 
 
 	})
 
-	mux.Handle("DELETE", pattern_YB_AppConfigUnset_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_YB_AppConfigUnset_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -4448,7 +4352,7 @@ func RegisterYBHandlerClient(ctx context.Context, mux *runtime.ServeMux, client 
 
 	})
 
-	mux.Handle("DELETE", pattern_YB_AppRemoveEnvironmentVariable_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_YB_AppRemoveEnvironmentVariable_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -4568,7 +4472,7 @@ func RegisterYBHandlerClient(ctx context.Context, mux *runtime.ServeMux, client 
 
 	})
 
-	mux.Handle("DELETE", pattern_YB_AppDetachVolume_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_YB_AppDetachVolume_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -4608,7 +4512,7 @@ func RegisterYBHandlerClient(ctx context.Context, mux *runtime.ServeMux, client 
 
 	})
 
-	mux.Handle("DELETE", pattern_YB_AppDetachDomain_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_YB_AppDetachDomain_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -4648,7 +4552,7 @@ func RegisterYBHandlerClient(ctx context.Context, mux *runtime.ServeMux, client 
 
 	})
 
-	mux.Handle("DELETE", pattern_YB_AppSrvUnBind_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_YB_AppSrvUnBind_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -4694,11 +4598,11 @@ var (
 
 	pattern_YB_DomainInfo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v2", "domain", "name"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_DomainToggleTLS_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v2", "domain", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_DomainToggleTLS_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v2", "domain", "_toggle-tls", "name"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_YB_DomainCreate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v2", "domain"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_DomainDelete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v2", "domain", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_DomainDelete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "domain", "_delete"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_YB_VolumeSpecList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v2", "volume-spec"}, "", runtime.AssumeColonVerbOpt(true)))
 
@@ -4708,7 +4612,7 @@ var (
 
 	pattern_YB_VolumeCreate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v2", "volume"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_VolumeDelete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v2", "volume", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_VolumeDelete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "volume", "_delete"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_YB_ImgList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v2", "image"}, "", runtime.AssumeColonVerbOpt(true)))
 
@@ -4742,7 +4646,7 @@ var (
 
 	pattern_YB_SrvAttachDomain_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "service", "_domain"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_SrvDetachDomain_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "service", "_domain"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_SrvDetachDomain_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v2", "service", "_domain", "_detach"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_YB_SrvOperator_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "service", "_operator"}, "", runtime.AssumeColonVerbOpt(true)))
 
@@ -4756,17 +4660,15 @@ var (
 
 	pattern_YB_AppChangePlan_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "_plan"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_AppLog_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v2", "application", "_log", "name"}, "", runtime.AssumeColonVerbOpt(true)))
-
 	pattern_YB_AppLogTail_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"v2", "application", "_log", "_tail", "name"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_YB_AppConfigSet_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "_config"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_AppConfigUnset_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "_config"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_AppConfigUnset_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v2", "application", "_config", "_unset"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_YB_AppAddEnvironmentVariable_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "_environment-variable"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_AppRemoveEnvironmentVariable_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "_environment-variable"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_AppRemoveEnvironmentVariable_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v2", "application", "_environment-variable", "_delete"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_YB_AppReset_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v2", "application", "_reset", "name"}, "", runtime.AssumeColonVerbOpt(true)))
 
@@ -4778,15 +4680,15 @@ var (
 
 	pattern_YB_AppAttachVolume_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "_volume"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_AppDetachVolume_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "_volume"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_AppDetachVolume_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v2", "application", "_volume", "_detach"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_YB_AppAttachDomain_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "_domain"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_AppDetachDomain_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "_domain"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_AppDetachDomain_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v2", "application", "_domain", "_detach"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_YB_AppSrvBind_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "_service"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_YB_AppSrvUnBind_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "application", "_service"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_YB_AppSrvUnBind_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v2", "application", "_service", "_unbind"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (
@@ -4873,8 +4775,6 @@ var (
 	forward_YB_AppDestroy_0 = runtime.ForwardResponseMessage
 
 	forward_YB_AppChangePlan_0 = runtime.ForwardResponseMessage
-
-	forward_YB_AppLog_0 = runtime.ForwardResponseStream
 
 	forward_YB_AppLogTail_0 = runtime.ForwardResponseMessage
 
