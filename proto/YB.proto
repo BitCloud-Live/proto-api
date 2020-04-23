@@ -384,15 +384,18 @@ message DomainCreateReq {
     bool tls = 2;
 }
 
+message DomainAttachedTo {
+    string name = 1;
+    string path = 2;
+    string endpoint = 3;
+}
+
 message DomainStatusRes {
     Timestamp created = 1;
     Timestamp updated = 2;
-    string name = 3;
-    string domain = 4;
-    string tls = 5;
-    map<string, string> attachedTo = 6;
-    //Added in v2.3 patch
-    string path = 7;
+    string domain = 3;
+    string tls = 4;
+    repeated DomainAttachedTo attachedTo = 5;
 }
 
 message DomainListRes {
