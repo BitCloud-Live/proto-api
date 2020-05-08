@@ -117,9 +117,10 @@ service YB {
         option (google.api.http) = {
             get: "/v2/image/_info" };
     }
-    rpc ImgDelete (Identity) returns (Empty) {
+    rpc ImgDelete (ImgBuildReq) returns (Empty) {
         option (google.api.http) = {
-            delete: "/v2/image" };
+            post: "/v2/image/_delete"
+            body: "*" };
     }
     rpc ImgBuild (ImgBuildReq) returns (Empty) { 
         option (google.api.http) = {
