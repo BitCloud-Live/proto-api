@@ -127,10 +127,7 @@ service YB {
             post: "/v2/image/_build"
             body: "*" };
     }
-    rpc ImgBuildLog (Identity) returns (stream Chunk) {
-        option (google.api.http) = {
-            get: "/v2/image/_build/_log" };
-    }
+    rpc ImgBuildLog (Identity) returns (stream Chunk) { }
     rpc ImgBuildLogTail (TailRequest) returns (Chunk) {
         option (google.api.http) = {
             get: "/v2/image/_build/_log/_tail" };
