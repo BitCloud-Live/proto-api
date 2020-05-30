@@ -183,7 +183,7 @@ service YB {
             post: "/v2/service/_domain/_detach"
             body: "*" };
     }
-    rpc SrvOperator (PunchedCard) returns (SrvStatusRes) {
+    rpc SrvOperator (PunchedCard) returns (OperatorRes) {
         option (google.api.http) = {
             post: "/v2/service/_operator"
              };
@@ -537,6 +537,10 @@ message PunchedCard {
     string name = 1;
     string oprator = 2;
     map<string, string> values = 3;
+}
+
+message OperatorRes {
+    string body = 1;
 }
 
 //For embedded response
