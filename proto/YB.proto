@@ -214,6 +214,11 @@ service YB {
             delete: "/v2/application/{name}"
              };
     }
+    rpc AppChangePlan (ChangePlanReq) returns (AppStatusRes) {
+        option (google.api.http) = {
+            post: "/v2/application/_plan"
+            body: "*" };
+    }
     rpc AppLog (Identity) returns (stream Chunk) { }
     rpc AppLogTail (TailRequest) returns (Chunk) {
         option (google.api.http) = {
@@ -599,6 +604,11 @@ message AppCreateReq {
     string name = 1;
     string plan = 2;
     map<string, string> values = 3;
+}
+
+message ChangePlanReq {
+    string name = 1;
+    string plan = 2;
 }
 
 // name for select [application, image]
