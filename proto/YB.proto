@@ -104,7 +104,9 @@ service YB {
             post: "/v2/volume/_delete"
             body: "*" };
     }
+    //Deprecated
     rpc VolumeFTPPortforward (Identity) returns (PortforwardRes) {}
+
 
 
 
@@ -292,6 +294,8 @@ service YB {
             post: "/v2/application/_service/_unbind"
             body: "*" };
     }
+
+    rpc AppFTPPortforward (Identity) returns (PortforwardRes) {}
 }
 
 // Authentication ////////////////////////////////////////////////////////////////////
